@@ -7,17 +7,147 @@
         "whats up", "howdy", "start", "hey assistant", "hi smartchat", "hello chatbot"
       ],
       "responses": [
-        "### Hello! Welcome to SmartChat AI\n\nI am your intelligent AI assistant ready to help with **Computer Science, Engineering, Programming, DBMS, AI/ML, Mathematics, Project Ideas, and Everyday Questions**.\n\nHow can I help you today? Feel free to ask a question or try one of the prompt suggestions below!"
+        "### Hello! Welcome to SmartChat AI\n\nI am your universal AI assistant ready to help with **Film Industry & Cinema, Sports & Athletics, Education & Academics, Science & Astronomy, Computer Science, Engineering, Medicine, Economics, and General Knowledge**.\n\nHow can I help you today? Feel free to ask any question from any field!"
       ]
     },
     {
       "tag": "identity_capabilities",
       "patterns": [
         "who are you", "what is your name", "what can you do", "tell me about yourself",
-        "what is smartchat ai", "who created you", "your capabilities", "how do you work"
+        "what is smartchat ai", "who created you", "your capabilities", "how do you work",
+        "which fields can you answer", "what topics do you know"
       ],
       "responses": [
-        "### About SmartChat AI\n\n**SmartChat AI** is a full-stack conversational AI assistant engineered for college students, developers, and learners.\n\n#### Key Capabilities:\n- **Technical & CS Knowledge**: Deep explanations of DBMS, Data Structures, Algorithms, OS, Computer Networks, and AI/ML.\n- **Programming & Debugging**: Code examples and bug fixing in Python, Java, C++, JavaScript, and SQL.\n- **Academic & Project Guidance**: Capstone project architectures, viva preparation, and resume guidance.\n- **Dual Engine Architecture**: Runs on an end-to-end Local NLP Semantic Classifier or Cloud LLMs (Gemini / Groq / OpenAI)."
+        "### About SmartChat AI\n\n**SmartChat AI** is a comprehensive, multi-domain conversational AI assistant powered by a dual-engine architecture.\n\n#### Key Capabilities Across Domains:\n- **Film Industry & Entertainment**: Cinema history, filmmaking, cinematography, scriptwriting, world cinema (Hollywood, Bollywood, regional cinema), and award systems.\n- **Sports & Athletics**: Football/Soccer, Cricket, Basketball, Tennis, Olympics, athlete profiles, tournament formats, and game strategies.\n- **Education & Academics**: Higher studies, study techniques (Feynman, Pomodoro, Active Recall), research methodology, exam preparation, and career guidance.\n- **Science & Medicine**: Physics, Astronomy, Chemistry, Biology, Genetics, Human Anatomy, and Healthcare.\n- **Business & Economics**: Macroeconomics, Stock Markets, Startups, Financial Literacy, and Global Trade.\n- **Computer Science & Engineering**: Full-stack web dev, AI/ML, DBMS, Data Structures, Algorithms, Cybersecurity, and Cloud Systems.\n- **Dual Engine**: Runs on a local NLP Semantic Classifier + dynamic knowledge retriever, with support for live cloud LLMs (Gemini / Groq / OpenAI)."
+      ]
+    },
+    {
+      "tag": "film_cinema_industry",
+      "patterns": [
+        "film industry", "movies and cinema", "tell me about film industry", "how does filmmaking work",
+        "hollywood bollywood cinema", "cinematography", "film direction", "academy awards oscars",
+        "screenplay writing", "history of cinema", "motion picture industry", "movie production process",
+        "stages of filmmaking", "pre production production post production", "film genres", "box office economics"
+      ],
+      "responses": [
+        "### The Global Film Industry & Cinema Arts\n\nThe **film industry** (motion picture industry) encompasses the artistic, technological, and commercial ecosystem of filmmaking, distribution, and exhibition.\n\n#### 1. The 5 Core Stages of Filmmaking:\n1. **Development**: Concept creation, rights acquisition, screenplay writing, and securing financial backing/budget.\n2. **Pre-Production**: Casting, location scouting, crew hiring, set construction, storyboarding, and costume design.\n3. **Production (Principal Photography)**: Filming all live-action scenes, sound recording, and lighting setups.\n4. **Post-Production**: Video editing, CGI/Visual Effects (VFX), Foley & Sound Design, Color Grading, and Original Score composition.\n5. **Distribution & Exhibition**: Theatrical release, film festival screenings, and streaming/OTT platform licensing.\n\n#### 2. Key Cinematic Craft Disciplines:\n- **Cinematography**: The art of visual storytelling through camera angles, framing (Rule of Thirds), lighting (Three-Point Lighting), and lens choices (Depth of Field).\n- **Screenwriting**: Crafting the narrative using structured frameworks such as the **Three-Act Structure** (Setup $\\to$ Confrontation $\\to$ Climax/Resolution).\n- **Direction**: Guiding the actors' performances and uniting cinematography, sound, and editing into a unified creative vision.\n\n#### 3. Major Film Hubs & Movements:\n- **Hollywood (USA)**: World's largest commercial cinema hub, pioneering blockbusters, CGI, and global franchise distribution.\n- **Indian Cinema (Bollywood, Tollywood, Kollywood)**: Largest film producer by volume, celebrated for musical narratives, high-octane drama, and global reach.\n- **European & World Cinema**: Famous for artistic movements like French New Wave, Italian Neorealism, and contemporary Korean cinema (*Parasite*, *Squid Game*).\n\n#### 4. Landmark Industry Milestones:\n- **1895**: Lumière brothers host the first commercial movie screening.\n- **1927**: First synchronized dialogue feature (*The Jazz Singer*).\n- **1939**: Golden Age of Hollywood with Technicolor (*The Wizard of Oz*, *Gone with the Wind*).\n- **1990s–Present**: CGI revolution (*Jurassic Park*, *Avatar*), 4K IMAX, and the shift toward streaming ecosystems (Netflix, Prime, Disney+)."
+      ]
+    },
+    {
+      "tag": "sports_athletics_global",
+      "patterns": [
+        "sports", "tell me about sports", "global sports", "athletics", "importance of sports",
+        "major world sports", "popular sports in the world", "sports tournaments", "benefits of playing sports",
+        "physical fitness and sports", "sports science and training"
+      ],
+      "responses": [
+        "### Global Sports & Athletics Overview\n\n**Sports and athletics** represent organized physical activities and games that foster health, strategic teamwork, global entertainment, and cultural unity.\n\n#### 1. Most Popular Sports in the World by Global Following:\n1. **Football / Soccer** (~4 Billion Fans): Governed globally by FIFA; celebrated for the FIFA World Cup and UEFA Champions League.\n2. **Cricket** (~2.5 Billion Fans): Immensely popular across South Asia, the UK, Australia, and the Caribbean; governed by the ICC.\n3. **Basketball** (~2.2 Billion Fans): Fast-paced global sport driven by the NBA and FIBA.\n4. **Field Hockey & Ice Hockey** (~2 Billion Fans combined): Major Olympic and regional sports.\n5. **Tennis** (~1 Billion Fans): Elite individual racquet sport defined by the four Grand Slam tournaments.\n\n#### 2. The Olympic Movement:\n- **Summer & Winter Olympic Games**: Held every 4 years by the International Olympic Committee (IOC), bringing together over 200 nations.\n- **Motto**: *'Citius, Altius, Fortius – Communiter'* (Faster, Higher, Stronger – Together).\n\n#### 3. Core Benefits of Sports & Physical Activity:\n- **Cardiovascular Health**: Improves VO2 max, lowers resting heart rate, and regulates blood pressure.\n- **Cognitive & Mental Benefits**: Triggers endorphin release, reduces cortisol (stress), and sharpens strategic decision-making.\n- **Teamwork & Discipline**: Builds leadership, emotional resilience, and communication skills under pressure."
+      ]
+    },
+    {
+      "tag": "cricket_sports",
+      "patterns": [
+        "cricket", "tell me about cricket", "rules of cricket", "cricket formats", "icc world cup",
+        "ipl indian premier league", "test cricket t20 odi", "cricket history", "how is cricket played",
+        "cricket pitch and wickets", "famous cricketers", "batting bowling fielding"
+      ],
+      "responses": [
+        "### The Game of Cricket: Formats, Rules & Global Tournaments\n\n**Cricket** is a bat-and-ball game played between two teams of 11 players on an oval grass field with a central 22-yard pitch.\n\n#### 1. The 3 Official Match Formats:\n- **Test Cricket (Traditional)**:\n  - 5-day duration with 4 innings (2 per team). The pinnacle test of endurance, tactical patience, and technique.\n- **One Day International (ODI)**:\n  - 50 overs per side. Showcased in the prestigious ICC Men's and Women's Cricket World Cups.\n- **Twenty20 (T20)**:\n  - 20 overs per side (~3 hours). High-intensity, boundary-heavy format that drives global franchise leagues like the **IPL (Indian Premier League)**, BBL, and PSL.\n\n#### 2. Key Rules & Terminology:\n- **Scoring**: Runs scored by running between the wickets, hitting 4s (grounded boundary), or 6s (aerial boundary).\n- **Dismissals (10 Ways)**: Bowled, Caught, LBW (Leg Before Wicket), Run Out, Stumped, Hit Wicket, etc.\n- **The Pitch & Equipment**: 22 yards (20.12 m) long; two sets of wickets (3 stumps + 2 bails).\n\n#### 3. Major Global Competitions:\n- **ICC Cricket World Cup** (50-over showcase held quadrennially)\n- **ICC T20 World Cup** (Fast-paced global tournament)\n- **ICC World Test Championship (WTC)**\n- **Indian Premier League (IPL)**: World's most commercially valuable cricket league."
+      ]
+    },
+    {
+      "tag": "football_soccer_sports",
+      "patterns": [
+        "football", "soccer", "tell me about football", "rules of soccer", "fifa world cup",
+        "uefa champions league", "football clubs and leagues", "premier league la liga",
+        "offside rule in football", "football legends messi ronaldo", "how soccer is played",
+        "how is football played", "how is football soccer played", "football in world cup",
+        "how is football soccer played in world cup", "football match rules"
+      ],
+      "responses": [
+        "### Football (Soccer): The World's Most Popular Sport\n\n**Football (Soccer)** is played between two teams of 11 players on a rectangular grass pitch with goalposts at each end. The objective is to maneuver the ball into the opponent's goal using any part of the body except hands and arms (excluding goalkeepers).\n\n#### 1. Core Match Structure & Rules:\n- **Duration**: 90 minutes (Two 45-minute halves) + stoppage time (added time).\n- **The Offside Rule (Law 11)**: An attacking player is offside if closer to the opponent's goal line than both the ball and the second-to-last opponent when the ball is played to them, unless in their own half.\n- **Cards**: **Yellow Card** (Caution/Warning) and **Red Card** (Ejection from match; team plays with 10 players).\n\n#### 2. Premier Competitions:\n- **FIFA World Cup**: The supreme international tournament held every 4 years, watched by over 3.5 billion viewers.\n- **UEFA Champions League**: The most prestigious club competition featuring the top European clubs (Real Madrid, Barcelona, Man City, Bayern Munich).\n- **Top Domestic Leagues**: English Premier League (EPL), La Liga (Spain), Serie A (Italy), Bundesliga (Germany), Ligue 1 (France).\n\n#### 3. Tactical Formations:\n- **4-3-3**: Balanced attacking setup with wingers.\n- **4-4-2**: Classic two-bank structure with twin strikers.\n- **3-5-2 / 5-3-2**: Wing-back system providing defensive solidity and midfield control."
+      ]
+    },
+    {
+      "tag": "basketball_sports",
+      "patterns": [
+        "basketball", "tell me about basketball", "nba", "rules of basketball",
+        "how is basketball played", "basketball positions", "points in basketball",
+        "three point shot free throw", "famous basketball players jordan lebron"
+      ],
+      "responses": [
+        "### Basketball & The NBA\n\n**Basketball** is a high-octane team sport played on a 94x50 foot hardwood court between two teams of 5 active players. Points are scored by shooting the ball through the opponent's elevated 10-foot hoop.\n\n#### 1. Scoring & Timing:\n- **Field Goals**: 2 points inside the 3-point arc; 3 points from beyond the arc (23.75 ft in NBA).\n- **Free Throws**: 1 point awarded following fouls during shooting motions.\n- **Game Time**: Four 12-minute quarters in the NBA (Four 10-minute quarters in FIBA).\n- **Shot Clock**: 24 seconds to attempt a shot hitting the rim.\n\n#### 2. The 5 Core Court Positions:\n1. **Point Guard (PG)**: Floor general, primary playmaker, and ball-handler.\n2. **Shooting Guard (SG)**: Perimeter shooter and secondary scorer.\n3. **Small Forward (SF)**: Versatile all-around wing player.\n4. **Power Forward (PF)**: Strong rebounder, interior defender, and mid-range shooter.\n5. **Center (C)**: Tallest player, rim protector, and post-up scorer.\n\n#### 3. Elite League & Icons:\n- **NBA (National Basketball Association)**: The premier global basketball league featuring 30 franchises.\n- **Legends**: Michael Jordan, LeBron James, Kobe Bryant, Stephen Curry, Magic Johnson, Kareem Abdul-Jabbar."
+      ]
+    },
+    {
+      "tag": "education_higher_studies",
+      "patterns": [
+        "education", "tell me about education", "higher education", "degrees btech mba phd",
+        "higher studies abroad", "university education", "how to choose a career",
+        "importance of education", "educational system", "scholarships for higher studies",
+        "postgraduate studies masters", "college vs university", "explain higher education degrees and research"
+      ],
+      "responses": [
+        "### Education, Higher Studies & Academic Pathways\n\n**Education** is the structured process of acquiring knowledge, critical thinking skills, values, and professional capabilities to advance society and personal growth.\n\n#### 1. Higher Education Degrees Hierarchy:\n1. **Undergraduate (Bachelor's)**: 3–4 years (e.g. B.Tech, B.E., B.Sc., B.A., B.Com, BBA). Builds foundational domain knowledge.\n2. **Postgraduate (Master's)**: 1–2 years (e.g. M.Tech, M.S., MBA, M.Sc., M.A.). Focuses on specialization, applied research, and leadership.\n3. **Doctorate (Ph.D.)**: 3–5+ years. Original, novel research contributing new knowledge to humanity through peer-reviewed thesis defense.\n4. **Post-Doctoral Fellowships**: Advanced independent research appointments.\n\n#### 2. Roadmap for Studying Abroad (Global Admissions):\n- **Standardized Exams**: GRE / GMAT (Graduate Aptitude), TOEFL / IELTS / Duolingo (English Proficiency).\n- **Application Package**: Statement of Purpose (SOP), Letters of Recommendation (LORs), Transcripts, and Resume (CV).\n- **Funding & Scholarships**: Fully funded fellowships (Fulbright, Chevening, DAAD, Erasmus Mundus) and University Graduate Assistantships (RA/TA).\n\n#### 3. Modern Educational Trends:\n- **STEM & Interdisciplinary Learning**: Blending Computer Science with Healthcare, Finance, and Climate Tech.\n- **Micro-credentials & MOOCs**: Coursera, edX, MIT OpenCourseWare for continuous upskilling.\n- **Experiential Learning**: Internships, capstone projects, hackathons, and lab research."
+      ]
+    },
+    {
+      "tag": "study_techniques_learning",
+      "patterns": [
+        "how to study effectively", "study techniques", "how to remember what i study",
+        "pomodoro technique", "feynman technique", "active recall spaced repetition",
+        "how to prepare for exams", "improve concentration study", "memory retention techniques",
+        "best way to learn fast", "study tips for students", "what is the best way to study effectively using feynman technique"
+      ],
+      "responses": [
+        "### Science-Backed Study & Learning Techniques\n\nMastering effective learning relies on cognitive psychology and neuroscience to maximize memory retention and conceptual mastery.\n\n#### 1. Top 4 Evidence-Based Study Methods:\n\n1. **The Feynman Technique (Deconstruct to Master)**:\n   - Choose a complex concept.\n   - Explain it in simple terms as if teaching a 10-year-old with no jargon.\n   - Identify your knowledge gaps where you struggle to explain.\n   - Return to source material, clarify, and simplify with analogies.\n\n2. **Active Recall (Testing Effect)**:\n   - Instead of passive re-reading or highlighting, close your notes and write/explain what you remember from memory.\n   - Flashcards (e.g. Anki) or practice mock tests produce 50%+ higher long-term retention.\n\n3. **Spaced Repetition (Ebbinghaus Forgetting Curve)**:\n   - Review concepts at increasing intervals: Day 1 $\\to$ Day 3 $\\to$ Day 7 $\\to$ Day 21 $\\to$ Day 60.\n   - Prevents memory decay and moves knowledge into permanent long-term memory.\n\n4. **The Pomodoro Technique (Deep Work)**:\n   - 25 minutes of 100% focused study without phone/notifications.\n   - 5 minutes short rest.\n   - After 4 cycles, take a longer 20–30 minute break.\n\n#### 2. Exam Preparation Strategy:\n- **T-minus 30 Days**: Complete conceptual syllabus and build summary cheat-sheets.\n- **T-minus 14 Days**: Solve 5–10 years of previous year exam papers under strict timed conditions.\n- **Night Before Exam**: Prioritize 7–8 hours of quality sleep for memory consolidation."
+      ]
+    },
+    {
+      "tag": "physics_space_astronomy",
+      "patterns": [
+        "physics", "astronomy", "tell me about space", "solar system", "black holes",
+        "quantum mechanics", "einstein theory of relativity", "big bang theory",
+        "space exploration nasa isro", "stars and galaxies", "laws of motion newton",
+        "thermodynamics physics", "speed of light", "james webb telescope",
+        "physics and astronomy", "tell me about physics and astronomy", "physics astronomy space",
+        "explain physics and astronomy", "physics concepts and laws"
+      ],
+      "responses": [
+        "### Physics, Astronomy & Space Exploration\n\n**Physics** explores the fundamental laws governing matter, energy, space, and time, while **Astronomy** studies celestial bodies and the cosmic universe.\n\n#### 1. Pillars of Fundamental Physics:\n- **Classical Mechanics (Newton's Laws)**:\n  - $F = m \\cdot a$ (Force equals mass times acceleration).\n  - Universal Gravitation: $F = G \\frac{m_1 m_2}{r^2}$.\n- **General Relativity (Albert Einstein)**:\n  - Gravity is not a mechanical force, but the curvature of four-dimensional **spacetime** caused by mass and energy ($E = mc^2$).\n- **Quantum Mechanics**:\n  - Governs subatomic particles: Wave-particle duality, Heisenberg's Uncertainty Principle ($\\Delta x \\Delta p \\ge \\frac{\\hbar}{2}$), and Quantum Entanglement.\n- **Thermodynamics**:\n  - 1st Law: Conservation of Energy.\n  - 2nd Law: Entropy of an isolated system always increases.\n\n#### 2. Cosmic Wonders & Astronomy:\n- **The Solar System**: 8 planets, asteroid belt, Kuiper belt, and the Sun ($99.86\\%$ of solar system mass).\n- **Black Holes & Event Horizon**: Regions of infinite gravitational density where even light cannot escape ($R_s = \\frac{2GM}{c^2}$).\n- **The Big Bang**: Occurred ~13.8 billion years ago, initiating cosmic expansion verified by Cosmic Microwave Background (CMB) radiation.\n\n#### 3. Modern Space Exploration:\n- **Agencies**: NASA (Artemis Moon program), ISRO (Chandrayaan & Gaganyaan), ESA, JAXA, and SpaceX.\n- **Deep Space Observatories**: James Webb Space Telescope (JWST) imaging the earliest galaxies formed after the Big Bang."
+      ]
+    },
+    {
+      "tag": "biology_medicine_health",
+      "patterns": [
+        "biology", "medicine", "tell me about human body", "human anatomy", "genetics dna rna",
+        "immune system", "healthcare and medical science", "nutrition and health",
+        "diseases and treatments", "how vaccines work", "cellular biology", "brain and nervous system"
+      ],
+      "responses": [
+        "### Biology, Medical Science & Human Physiology\n\n**Biological science and medicine** study living organisms, cellular mechanisms, and physiological health to treat disease and improve human longevity.\n\n#### 1. Core Biological Foundations:\n- **DNA & Genetics (Central Dogma)**:\n  $$\\text{DNA} \\xrightarrow{\\text{Transcription}} \\text{mRNA} \\xrightarrow{\\text{Translation}} \\text{Functional Proteins}$$\n  - DNA structure: Double helix with 4 nucleotide bases: Adenine (A), Thymine (T), Guanine (G), Cytosine (C).\n- **Cellular Respiration (ATP Generation)**:\n  $$\\text{C}_6\\text{H}_{12}\\text{O}_6 + 6\\text{O}_2 \\longrightarrow 6\\text{CO}_2 + 6\\text{H}_2\\text{O} + 36-38\\text{ ATP}$$\n\n#### 2. Major Human Body Systems:\n- **Circulatory System**: Heart, arteries, veins pumping oxygenated blood and nutrients.\n- **Nervous System**: Brain (cerebrum, cerebellum, brainstem) and spinal cord transmitting electrical impulses via neurons.\n- **Immune System**: Innate immunity (white blood cells, macrophages) and Adaptive immunity (T-cells, B-cells creating antibodies against pathogens).\n\n#### 3. Medical Innovations:\n- **mRNA Vaccines**: Teaching immune cells to recognize viral spike proteins without live pathogens.\n- **CRISPR-Cas9 Gene Editing**: Precision molecular scissors to modify mutated DNA sequences.\n- **AI in Diagnostics**: Convolutional neural networks detecting anomalies in MRI, CT scans, and pathology slides."
+      ]
+    },
+    {
+      "tag": "economics_finance_business",
+      "patterns": [
+        "economics", "finance", "tell me about stock market", "inflation gdp", "how banking works",
+        "business and entrepreneurship", "cryptocurrency bitcoin", "venture capital startups",
+        "macroeconomics vs microeconomics", "supply and demand", "personal finance investing"
+      ],
+      "responses": [
+        "### Economics, Finance & Business Fundamentals\n\n#### 1. Macroeconomic Principles:\n- **Supply & Demand**: Market equilibrium price is determined where quantity demanded equals quantity supplied.\n- **Gross Domestic Product (GDP)**: The total monetary value of all finished goods and services produced within a country ($GDP = C + I + G + (X - M)$).\n- **Inflation & Interest Rates**: Inflation is the rate at which purchasing power falls. Central banks (Federal Reserve, RBI) raise interest rates to cool inflation and lower rates to stimulate economic growth.\n\n#### 2. Financial Markets & Investment Instruments:\n- **Equities (Stocks)**: Fractional ownership in public companies traded on exchanges (NYSE, NASDAQ, NSE).\n- **Bonds (Fixed Income)**: Debt securities issued by governments or corporations paying coupon interest.\n- **Index Funds & ETFs**: Baskets of diversified shares tracking broader market indices (S&P 500, NIFTY 50).\n\n#### 3. Startup & Business Ecosystem:\n- **Startup Lifecycle**: Ideation $\\to$ Product-Market Fit (PMF) $\\to$ Seed Funding $\\to$ Series A/B/C Venture Capital $\\to$ IPO (Initial Public Offering).\n- **Core Financial Metrics**: ARR (Annual Recurring Revenue), CAC (Customer Acquisition Cost), LTV (Lifetime Value), and Burn Rate."
+      ]
+    },
+    {
+      "tag": "history_world_civilizations",
+      "patterns": [
+        "history", "world history", "tell me about ancient civilizations", "world war 1 world war 2",
+        "renaissance industrial revolution", "history of the world", "famous historical events",
+        "ancient egypt mesopotamia", "roman empire", "cold war history"
+      ],
+      "responses": [
+        "### World History & Major Civilizational Epochs\n\n**World History** chronicles the development of human civilization, social structures, scientific revolutions, and global geopolitical transformations.\n\n#### 1. Major Ancient Civilizations:\n- **Mesopotamia (Cradle of Civilization)**: Invented cuneiform writing, wheel, and the Code of Hammurabi.\n- **Ancient Egypt (Nile Valley)**: Monumental architecture (Pyramids of Giza), hieroglyphics, and centralized state governance.\n- **Indus Valley Civilization**: Advanced urban planning, baked-brick sewage systems, and maritime trade.\n- **Classical Greece & Rome**: Foundations of democracy, philosophy (Socrates, Plato, Aristotle), Roman Law, and republic systems.\n\n#### 2. Defining Historical Turning Points:\n- **The Renaissance (14th–17th Century)**: Rebirth of art, scientific inquiry (Galileo, Da Vinci), and humanism in Europe.\n- **The Industrial Revolution (18th–19th Century)**: Transition from agrarian crafts to steam-powered mass factory manufacturing.\n- **World War I (1914–1918) & World War II (1939–1945)**: Global conflicts resulting in the founding of the United Nations (UN), geopolitical realignment, and the nuclear age.\n- **The Cold War & Digital Age (1947–Present)**: Space race, fall of the Berlin Wall (1989), and the rise of the Internet and Artificial Intelligence."
       ]
     },
     {
@@ -37,7 +167,7 @@
         "difference between ml and deep learning", "how do neural networks work", "backpropagation", "loss functions"
       ],
       "responses": [
-        "### Deep Learning & Neural Networks\n\n**Deep Learning** is a specialized subset of Machine Learning that uses multi-layered Artificial Neural Networks (ANNs) to automatically extract hierarchical feature representations from raw data.\n\n#### Key Neural Network Architectures:\n1. **Feedforward Neural Networks (FNN / MLP)**:\n   - Information moves strictly in one forward direction from input layers through hidden layers to the output.\n2. **Convolutional Neural Networks (CNN)**:\n   - Uses kernel filters and pooling layers. Specialized for grid-like data such as **Computer Vision, Medical Imaging, and Object Detection**.\n3. **Recurrent Neural Networks (RNN / LSTM / GRU)**:\n   - Maintains a hidden internal memory state. Designed for sequential data such as **Time Series and Natural Language Processing**.\n4. **Transformers (Self-Attention)**:\n   - Utilizes Multi-Head Attention mechanisms to process sequences in parallel. Powers modern Large Language Models (GPT, Gemini, BERT).\n\n#### Fundamental Math:\n- **Forward Pass**: $z = W \\cdot x + b$, $a = \\sigma(z)$\n- **Loss Function**: Mean Squared Error ($MSE$) or Cross-Entropy Loss ($-\\sum y \\log(\\hat{y})$)\n- **Backpropagation**: Calculates gradients using the Chain Rule ($\\frac{\\partial L}{\\partial W} = \\frac{\\partial L}{\\partial a} \\cdot \\frac{\\partial a}{\\partial z} \\cdot \\frac{\\partial z}{\\partial W}$) to update weights via Gradient Descent."
+        "### Deep Learning & Neural Networks\n\n**Deep Learning** is a specialized subset of Machine Learning that uses multi-layered Artificial Neural Networks (ANNs) to automatically extract hierarchical feature representations from raw data.\n\n#### Key Neural Network Architectures:\n1. **Feedforward Neural Networks (FNN / MLP)**:\n   - Information moves strictly in one forward direction from input layers through hidden layers to the output.\n2. **Convolutional Neural Networks (CNN)**:\n   - Uses kernel filters and pooling layers. Specialized for grid-like data such as **Computer Vision, Medical Imaging, and Object Detection**.\n3. **Recurrent Neural Networks (RNN / LSTM / GRU)**:\n   - Maintains a hidden internal memory state. Designed for sequential data such as **Time Series and Natural Language Processing**.\n4. **Transformers (Self-Attention)**:\n   - Utilizes Multi-Head Attention mechanisms to process sequences in parallel. Powers modern Large Language Models (GPT, Gemini, BERT).\n\n#### Fundamental Math:\n- **Forward Pass**: $z = W \\cdot x + b$, $a = \\sigma(z)$\n- **Loss Function**: Cross-Entropy Loss ($-\\sum y \\log(\\hat{y})$) or MSE\n- **Backpropagation**: Calculates gradients using the Chain Rule ($\\frac{\\partial L}{\\partial W} = \\frac{\\partial L}{\\partial a} \\cdot \\frac{\\partial a}{\\partial z} \\cdot \\frac{\\partial z}{\\partial W}$) to update weights via Gradient Descent."
       ]
     },
     {
@@ -57,7 +187,7 @@
         "jvm jre jdk difference", "garbage collection in java", "java sample code", "multithreading in java"
       ],
       "responses": [
-        "### Java Programming & Object-Oriented Principles\n\nJava is a robust, class-based, object-oriented programming language designed to follow the **Write Once, Run Anywhere (WORA)** philosophy.\n\n#### 1. The 4 Pillars of OOP in Java:\n- **Encapsulation**: Wrapping data (`private` fields) and code (`public` getters/setters) into a single unit.\n- **Inheritance**: Reusing code where a child class acquires properties of a parent class (`extends`).\n- **Polymorphism**: Compile-time (Method Overloading) and Runtime (Method Overriding with `@Override`).\n- **Abstraction**: Hiding complex internal logic using `abstract` classes and `interface` contracts.\n\n#### 2. Clean Java Example:\n```java\n// Interface defining contract\ninterface PaymentMethod {\n    boolean processPayment(double amount);\n}\n\n// Concrete Implementation with Polymorphism\npublic class CreditCardPayment implements PaymentMethod {\n    private String cardNumber;\n\n    public CreditCardPayment(String cardNumber) {\n        this.cardNumber = cardNumber;\n    }\n\n    @Override\n    public boolean processPayment(double amount) {\n        System.out.println(\"Processing $\" + amount + \" via Card: \" + cardNumber.substring(cardNumber.length() - 4));\n        return true;\n    }\n}\n```\n\n#### 3. JVM vs JRE vs JDK:\n- **JDK**: Java Development Kit (Compiler `javac` + Dev Tools + JRE).\n- **JRE**: Java Runtime Environment (JVM + Core Class Libraries).\n- **JVM**: Java Virtual Machine (Executes bytecode onto platform-specific machine code)."
+        "### Java Programming & Object-Oriented Principles\n\nJava is a robust, class-based, object-oriented programming language designed to follow the **Write Once, Run Anywhere (WORA)** philosophy.\n\n#### 1. The 4 Pillars of OOP in Java:\n- **Encapsulation**: Wrapping data (`private` fields) and code (`public` getters/setters) into a single unit.\n- **Inheritance**: Reusing code where a child class acquires properties of a parent class (`extends`).\n- **Polymorphism**: Compile-time (Method Overloading) and Runtime (Method Overriding with `@Override`).\n- **Abstraction**: Hiding complex internal logic using `abstract` classes and `interface` contracts.\n\n#### 2. Clean Java Example:\n```java\n// Interface defining contract\ninterface PaymentMethod {\n    boolean processPayment(double amount);\n}\n\n// Concrete Implementation with Polymorphism\npublic class CreditCardPayment implements PaymentMethod {\n    private String cardNumber;\n\n    public CreditCardPayment(String cardNumber) {\n        this.cardNumber = cardNumber;\n    }\n\n    @Override\n    public boolean processPayment(double amount) {\n        System.out.println(\"Processing $\" + amount + \" via Card: \" + cardNumber.substring(cardNumber.length() - 4));\n        return true;\n    }\n}\n```"
       ]
     },
     {
@@ -87,7 +217,7 @@
         "database normalization", "explain 1nf", "explain 2nf", "explain 3nf", "explain bcnf"
       ],
       "responses": [
-        "### DBMS Normalization & Normal Forms\n\n**Normalization** is the systematic database design approach used to eliminate redundant data and avoid **Insertion, Update, and Deletion Anomalies**.\n\n#### Normal Forms Breakdown:\n\n1. **First Normal Form (1NF)**:\n   - Every column must contain **atomic (indivisible)** values.\n   - No repeating groups or comma-separated lists in a single cell.\n   - Must define a Primary Key.\n\n2. **Second Normal Form (2NF)**:\n   - Must satisfy 1NF.\n   - **No Partial Dependency**: Non-prime attributes must be fully functionally dependent on the entire Primary Key (crucial for composite primary keys).\n\n3. **Third Normal Form (3NF)**:\n   - Must satisfy 2NF.\n   - **No Transitive Dependency**: Non-prime attributes must depend ONLY on candidate keys ($X \\to Y \\to Z$ is forbidden).\n\n4. **Boyce-Codd Normal Form (BCNF)**:\n   - Stricter variant of 3NF.\n   - For every functional dependency $X \\to Y$, $X$ must be a **Super Key**.\n\n#### Quick Comparison Table:\n\n| Normal Form | Key Requirement | Solves |\n| :--- | :--- | :--- |\n| **1NF** | Atomic values & Unique rows | Repeating groups |\n| **2NF** | 1NF + Full functional dependency | Partial dependency anomalies |\n| **3NF** | 2NF + No transitive dependencies | Transitive anomalies |\n| **BCNF**| Left side of every FD must be Super Key | Overlapping composite key anomalies |"
+        "### DBMS Normalization & Normal Forms\n\n**Normalization** is the systematic database design approach used to eliminate redundant data and avoid **Insertion, Update, and Deletion Anomalies**.\n\n#### Normal Forms Breakdown:\n\n1. **First Normal Form (1NF)**:\n   - Every column must contain **atomic (indivisible)** values.\n   - No repeating groups or comma-separated lists in a single cell.\n   - Must define a Primary Key.\n\n2. **Second Normal Form (2NF)**:\n   - Must satisfy 1NF.\n   - **No Partial Dependency**: Non-prime attributes must be fully functionally dependent on the entire Primary Key (crucial for composite primary keys).\n\n3. **Third Normal Form (3NF)**:\n   - Must satisfy 2NF.\n   - **No Transitive Dependency**: Non-prime attributes must depend ONLY on candidate keys ($X \\to Y \\to Z$ is forbidden).\n\n4. **Boyce-Codd Normal Form (BCNF)**:\n   - Stricter variant of 3NF.\n   - For every functional dependency $X \\to Y$, $X$ must be a **Super Key**."
       ]
     },
     {
@@ -97,7 +227,7 @@
         "sql query examples", "database queries", "acid properties", "sql indexing"
       ],
       "responses": [
-        "### SQL Joins & ACID Properties\n\n#### 1. SQL Joins Explained:\n- **`INNER JOIN`**: Returns records with matching values in both tables.\n- **`LEFT (OUTER) JOIN`**: Returns all records from the left table, and matched records from the right table (NULL if no match).\n- **`RIGHT (OUTER) JOIN`**: Returns all records from the right table, and matched records from the left table.\n- **`FULL (OUTER) JOIN`**: Returns all records when there is a match in either table.\n\n```sql\n-- Example: Fetching Student details with their Department names\nSELECT \n    s.student_id, \n    s.student_name, \n    d.department_name\nFROM Students s\nINNER JOIN Departments d ON s.dept_id = d.dept_id\nWHERE s.gpa >= 3.5\nORDER BY s.student_name ASC;\n```\n\n#### 2. ACID Properties of Transactions:\n- **Atomicity**: 'All or Nothing' — either the whole transaction completes or rolls back completely.\n- **Consistency**: The database moves from one valid state to another valid state preserving integrity constraints.\n- **Isolation**: Concurrent transactions execute without interfering with one another.\n- **Durability**: Once a transaction is committed, changes persist permanently even in case of power failure."
+        "### SQL Joins & ACID Properties\n\n#### 1. SQL Joins Explained:\n- **`INNER JOIN`**: Returns records with matching values in both tables.\n- **`LEFT (OUTER) JOIN`**: Returns all records from the left table, and matched records from the right table (NULL if no match).\n- **`RIGHT (OUTER) JOIN`**: Returns all records from the right table, and matched records from the left table.\n- **`FULL (OUTER) JOIN`**: Returns all records when there is a match in either table.\n\n```sql\n-- Example: Fetching Student details with their Department names\nSELECT \n    s.student_id, \n    s.student_name, \n    d.department_name\nFROM Students s\nINNER JOIN Departments d ON s.dept_id = d.dept_id\nWHERE s.gpa >= 3.5\nORDER BY s.student_name ASC;\n```"
       ]
     },
     {
@@ -117,7 +247,7 @@
         "binary search", "quicksort mergesort", "dynamic programming"
       ],
       "responses": [
-        "### Algorithms & Big-O Complexity\n\n**Big-O Notation** characterizes the upper bound of execution time or memory space required by an algorithm as input size $n$ grows.\n\n#### 1. Common Time Complexities:\n- $\\mathcal{O}(1)$ — Constant Time (Hash Map lookup, array index access)\n- $\\mathcal{O}(\\log n)$ — Logarithmic Time (Binary Search)\n- $\\mathcal{O}(n)$ — Linear Time (Linear scan)\n- $\\mathcal{O}(n \\log n)$ — Linearithmic Time (Merge Sort, Quick Sort average)\n- $\\mathcal{O}(n^2)$ — Quadratic Time (Nested loops, Bubble Sort)\n- $\\mathcal{O}(2^n)$ — Exponential Time (Recursive Fibonacci without memoization)\n\n#### 2. Binary Search in Python ($\\mathcal{O}(\\log n)$):\n```python\ndef binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = left + (right - left) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\n# Array must be sorted\nnumbers = [12, 24, 35, 47, 59, 68, 80, 93]\nprint('Index of 47:', binary_search(numbers, 47))  # Output: 3\n```"
+        "### Algorithms & Big-O Complexity\n\n**Big-O Notation** characterizes the upper bound of execution time or memory space required by an algorithm as input size $n$ grows.\n\n#### 1. Common Time Complexities:\n- $\\mathcal{O}(1)$ — Constant Time (Hash Map lookup, array index access)\n- $\\mathcal{O}(\\log n)$ — Logarithmic Time (Binary Search)\n- $\\mathcal{O}(n)$ — Linear Time (Linear scan)\n- $\\mathcal{O}(n \\log n)$ — Linearithmic Time (Merge Sort, Quick Sort average)\n- $\\mathcal{O}(n^2)$ — Quadratic Time (Nested loops, Bubble Sort)\n- $\\mathcal{O}(2^n)$ — Exponential Time (Recursive Fibonacci without memoization)\n\n#### 2. Binary Search in Python ($\\mathcal{O}(\\log n)$):\n```python\ndef binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = left + (right - left) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\nnumbers = [12, 24, 35, 47, 59, 68, 80, 93]\nprint('Index of 47:', binary_search(numbers, 47))  # Output: 3\n```"
       ]
     },
     {
@@ -147,7 +277,7 @@
         "eigenvalues eigenvectors", "probability and statistics", "bayes theorem", "matrices"
       ],
       "responses": [
-        "### Engineering Mathematics for Computer Science\n\n#### 1. Linear Algebra (Foundations of AI/ML):\n- **Matrix Multiplication**: If $A$ is $m \\times k$ and $B$ is $k \\times n$, $C = A B$ is $m \\times n$ where $C_{ij} = \\sum_{r=1}^k A_{ir} B_{rj}$.\n- **Eigenvalues ($\\lambda$) & Eigenvectors ($v$)**:\n  $$A v = \\lambda v \\iff (A - \\lambda I) v = 0$$\n  Fundamental for Principal Component Analysis (PCA), PageRank, and SVD.\n\n#### 2. Calculus & Gradient Descent:\n- **Partial Derivatives**: Measures rate of change with respect to one variable while holding others constant.\n- **Gradient Vector ($\\nabla f$)**: Direction of steepest ascent. Gradient descent updates parameters in the opposite direction:\n  $$\\theta_{t+1} = \\theta_t - \\alpha \\nabla_{\\theta} J(\\theta)$$\n\n#### 3. Probability & Statistics:\n- **Bayes' Theorem**:\n  $$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$\n- **Normal Distribution ($Z$-Score)**: $Z = \\frac{X - \\mu}{\\sigma}$."
+        "### Engineering Mathematics for Computer Science\n\n#### 1. Linear Algebra (Foundations of AI/ML):\n- **Matrix Multiplication**: If $A$ is $m \\times k$ and $B$ is $k \\times n$, $C = A B$ is $m \\times n$ where $C_{ij} = \\sum_{r=1}^k A_{ir} B_{rj}$.\n- **Eigenvalues ($\\lambda$) & Eigenvectors ($v$)**:\n  $$A v = \\lambda v \\iff (A - \\lambda I) v = 0$$\n  Fundamental for Principal Component Analysis (PCA), PageRank, and SVD.\n\n#### 2. Calculus & Gradient Descent:\n- **Partial Derivatives**: Measures rate of change with respect to one variable while holding others constant.\n- **Gradient Vector ($\\nabla f$)**: Direction of steepest ascent. Gradient descent updates parameters in the opposite direction:\n  $$\\theta_{t+1} = \\theta_t - \\alpha \\nabla_{\\theta} J(\\theta)$$\n\n#### 3. Probability & Statistics:\n- **Bayes' Theorem**:\n  $$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$"
       ]
     },
     {
@@ -157,17 +287,7 @@
         "sql injection xss", "hashing vs encryption", "network security", "cia triad"
       ],
       "responses": [
-        "### Cybersecurity & Cryptography Essentials\n\n#### 1. The CIA Triad:\n- **Confidentiality**: Ensuring data is accessible only to authorized entities (Encryption, Access Control).\n- **Integrity**: Protecting data from unauthorized modification or tampering (Digital Signatures, Hash Checks).\n- **Availability**: Ensuring systems and services remain operational when needed (DDoS Mitigation, Redundancy).\n\n#### 2. Symmetric vs. Asymmetric Encryption:\n- **Symmetric Encryption**: Same key used for both encryption and decryption (AES-256). Fast, used for bulk data transfer.\n- **Asymmetric Encryption**: Key pair — Public key (encodes) and Private key (decodes) (RSA, ECC). Used for key exchange and digital certificates.\n\n#### 3. Top Web Security Vulnerabilities & Mitigations:\n- **SQL Injection (SQLi)**: Attacker injects malicious SQL statements. *Fix*: Use Parameterized Queries / Prepared Statements.\n- **Cross-Site Scripting (XSS)**: Injecting malicious scripts into client browsers. *Fix*: Sanitize user input and enforce Content Security Policy (CSP).\n- **Cross-Site Request Forgery (CSRF)**: Forcing authenticated user to perform unwanted actions. *Fix*: CSRF Tokens & SameSite cookies."
-      ]
-    },
-    {
-      "tag": "software_engineering_agile",
-      "patterns": [
-        "software engineering", "agile methodology", "scrum sprint", "design patterns",
-        "singleton factory observer", "sdlc phases", "git branching strategy"
-      ],
-      "responses": [
-        "### Software Engineering & Design Patterns\n\n#### 1. Software Development Life Cycle (SDLC) & Agile:\n- **SDLC Phases**: Requirements Analysis $\\to$ System Design $\\to$ Implementation $\\to$ Testing $\\to$ Deployment $\\to$ Maintenance.\n- **Agile & Scrum**: Iterative development framework based on fixed-length Sprints (1-4 weeks), Daily Standups, Sprint Planning, and Retrospectives.\n\n#### 2. Key Gang-of-Four (GoF) Design Patterns:\n- **Creational (Singleton)**: Ensures a class has only one instance with a global point of access.\n- **Creational (Factory)**: Creates objects without specifying the exact class to instantiate.\n- **Structural (Adapter)**: Allows incompatible interfaces to work together.\n- **Behavioral (Observer)**: One-to-many dependency where state changes notify subscribers (event systems).\n\n#### 3. Clean Git Workflow:\n- `main` / `production`: Stable, production-ready branch.\n- `develop`: Ongoing integration branch.\n- `feature/feature-name`: Isolated branch for individual task development before pull requests."
+        "### Cybersecurity & Cryptography Essentials\n\n#### 1. The CIA Triad:\n- **Confidentiality**: Ensuring data is accessible only to authorized entities (Encryption, Access Control).\n- **Integrity**: Protecting data from unauthorized modification or tampering (Digital Signatures, Hash Checks).\n- **Availability**: Ensuring systems and services remain operational when needed (DDoS Mitigation, Redundancy).\n\n#### 2. Symmetric vs. Asymmetric Encryption:\n- **Symmetric Encryption**: Same key used for both encryption and decryption (AES-256). Fast, used for bulk data transfer.\n- **Asymmetric Encryption**: Key pair — Public key (encodes) and Private key (decodes) (RSA, ECC). Used for key exchange and digital certificates.\n\n#### 3. Top Web Security Vulnerabilities & Mitigations:\n- **SQL Injection (SQLi)**: Attacker injects malicious SQL statements. *Fix*: Use Parameterized Queries / Prepared Statements.\n- **Cross-Site Scripting (XSS)**: Injecting malicious scripts into client browsers. *Fix*: Sanitize user input and enforce Content Security Policy (CSP)."
       ]
     },
     {
@@ -177,37 +297,7 @@
         "computer science project ideas", "ai project ideas", "web dev project ideas"
       ],
       "responses": [
-        "### College Capstone & Mini-Project Ideas\n\nHere are evaluated, high-scoring project ideas categorized by technology stack:\n\n#### 1. Artificial Intelligence & NLP:\n- **SmartChat AI Assistant (Current Project)**: Conversational assistant with local NLP intent classification, multi-LLM API switching, and persistent session state.\n- **Document Q&A RAG System**: Retrieval-Augmented Generation using LangChain, FAISS vector embeddings, and PDF summarization.\n- **Autonomous Exam Proctoring System**: Face detection, head pose estimation, and audio anomaly detection using OpenCV and PyTorch.\n\n#### 2. Full-Stack Web Applications:\n- **Student Placement & Skill Assessment Portal**: Automated resume scoring against job descriptions, mock interview quizzes, and analytics dashboard (Flask/React + PostgreSQL).\n- **Decentralized Certificate Verification**: Blockchain-backed tamper-proof academic credentials verification.\n- **Smart Campus Facility Management**: Room booking, complaint ticketing, and IoT sensor energy monitoring.\n\n#### 3. Cybersecurity & Systems:\n- **Network Intrusion Detection System (NIDS)**: Packet capture using Scapy and real-time malicious traffic classification using Random Forest.\n\nWhich category would you like a detailed architecture and database schema for?"
-      ]
-    },
-    {
-      "tag": "career_interview_guidance",
-      "patterns": [
-        "career guidance", "how to prepare for coding interviews", "resume tips for cs students",
-        "how to get a software engineer job", "tech interview prep"
-      ],
-      "responses": [
-        "### Software Engineering Career & Interview Roadmap\n\n#### 1. Technical Preparation (DSA & Problem Solving):\n- **Phase 1: Foundations**: Master Arrays, Strings, Hash Maps, Linked Lists, Stacks, Queues.\n- **Phase 2: Intermediate**: Trees (BST, Traversals), Graphs (BFS, DFS), Heaps, Recursion.\n- **Phase 3: Advanced**: Dynamic Programming, Greedy Algorithms, Backtracking.\n- *Platform Recommendation*: Practice ~150 curated LeetCode problems (Blind 75 or NeetCode 150).\n\n#### 2. Core CS Subjects for Campus Placements:\n- DBMS (SQL queries, Normalization, ACID, Indexing)\n- Operating Systems (Processes, Threads, Deadlocks, Virtual Memory)\n- Computer Networks (OSI Model, TCP/UDP, DNS, HTTP)\n- Object-Oriented Programming (OOP: Encapsulation, Polymorphism, Inheritance, Abstraction)\n\n#### 3. Resume & Portfolio Recommendations:\n- Build 2–3 end-to-end full-stack or AI projects with live deployed links and clean GitHub READMEs.\n- Use the STAR method (Situation, Task, Action, Result) for bullet points on resumes."
-      ]
-    },
-    {
-      "tag": "film_entertainment",
-      "patterns": [
-        "movies and film", "film industry", "cinema history", "directors and filmmaking",
-        "entertainment topics", "screenwriting three act structure", "cinematography concepts"
-      ],
-      "responses": [
-        "### Cinema, Film Industry & Storytelling\n\n#### 1. Film Narrative Structure (The Three-Act Structure):\n- **Act I: Setup**: Introduces the protagonist, the ordinary world, and the Inciting Incident that disrupts the status quo.\n- **Act II: Confrontation**: The protagonist faces escalating obstacles, mid-point revelation, and the 'dark night of the soul'.\n- **Act III: Resolution**: The climax where the core conflict is resolved, followed by the denouement.\n\n#### 2. Key Cinematography & Production Concepts:\n- **Rule of Thirds**: Framing technique dividing the frame into a 3x3 grid to create natural balance and focus.\n- **Depth of Field (DoF)**: Controlled by aperture ($f$-stop); shallow DoF isolates the subject from a blurred background.\n- **Color Grading & Mood**: Using color palettes (e.g. warm golden tones for nostalgia, desaturated blues for suspense) to evoke emotional resonance.\n\n#### 3. Landmark Cinema Innovations:\n- Introduction of synchronized sound (*The Jazz Singer*, 1927)\n- Three-strip Technicolor process (*The Wizard of Oz*, 1939)\n- CGI integration and motion capture in digital cinema (*Jurassic Park*, 1993; *Avatar*, 2009)."
-      ]
-    },
-    {
-      "tag": "cloud_devops_tech",
-      "patterns": [
-        "cloud computing", "devops concepts", "docker containers", "kubernetes",
-        "aws azure gcp", "ci cd pipeline", "microservices vs monolithic"
-      ],
-      "responses": [
-        "### Cloud Computing & DevOps Fundamentals\n\n#### 1. Cloud Service Models:\n- **IaaS (Infrastructure as a Service)**: Virtual machines, raw storage, networks (AWS EC2, Google Compute Engine).\n- **PaaS (Platform as a Service)**: Managed runtime environment for deploying code without OS management (Heroku, Render, AWS Elastic Beanstalk).\n- **SaaS (Software as a Service)**: End-user web applications (Google Workspace, Office 365).\n\n#### 2. Docker & Containerization:\n- **Containers vs. Virtual Machines**: Containers share the host OS kernel and isolate user space, making them lightweight (MBs vs GBs) and starting in milliseconds.\n- **Dockerfile**: Blueprint instructions to build a container image.\n\n#### 3. Continuous Integration & Continuous Deployment (CI/CD):\n- **CI**: Automatically build and run automated unit/integration tests on each code push (GitHub Actions, GitLab CI).\n- **CD**: Automatically deploy verified artifacts into staging and production environments."
+        "### College Capstone & Mini-Project Ideas\n\nHere are evaluated, high-scoring project ideas categorized by technology stack:\n\n#### 1. Artificial Intelligence & NLP:\n- **SmartChat AI Assistant (Current Project)**: Conversational assistant with local NLP intent classification, multi-LLM API switching, and persistent session state.\n- **Document Q&A RAG System**: Retrieval-Augmented Generation using LangChain, FAISS vector embeddings, and PDF summarization.\n- **Autonomous Exam Proctoring System**: Face detection, head pose estimation, and audio anomaly detection using OpenCV and PyTorch.\n\n#### 2. Full-Stack Web Applications:\n- **Student Placement & Skill Assessment Portal**: Automated resume scoring against job descriptions, mock interview quizzes, and analytics dashboard (Flask/React + PostgreSQL).\n- **Decentralized Certificate Verification**: Blockchain-backed tamper-proof academic credentials verification.\n- **Smart Campus Facility Management**: Room booking, complaint ticketing, and IoT sensor energy monitoring.\n\n#### 3. Cybersecurity & Systems:\n- **Network Intrusion Detection System (NIDS)**: Packet capture using Scapy and real-time malicious traffic classification using Random Forest."
       ]
     },
     {
@@ -216,7 +306,7 @@
         "thank you", "thanks a lot", "bye", "goodbye", "see you later", "thanks for help", "appreciate it"
       ],
       "responses": [
-        "### You're very welcome!\n\nI'm glad I could assist you. If you have more questions about coding, engineering subjects, or project ideas, just ask anytime.\n\nHave a productive coding and learning session! 🚀"
+        "### You're very welcome!\n\nI'm glad I could assist you. If you have more questions about movies, sports, education, physics, coding, or project ideas, just ask anytime.\n\nHave a productive and inspiring session! 🚀"
       ]
     }
   ]

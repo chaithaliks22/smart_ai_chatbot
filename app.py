@@ -19,9 +19,12 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-# Load environment variables from .env file
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 
+# Load environment variables from .env file
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Configure logging
 logging.basicConfig(
@@ -31,17 +34,21 @@ logging.basicConfig(
 )
 logger = logging.getLogger("SmartChatAI")
 
-# Initialize Flask app
-app = Flask(__name__, template_folder="templates", static_folder="static")
+# Initialize Flask app with explicit folder paths
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static")
+)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "smartchat-ai-college-project-2026")
 app.config["JSON_AS_ASCII"] = False
 
 # System Prompt for SmartChat AI
-SYSTEM_PROMPT = """You are SmartChat AI, a highly capable, intelligent, and friendly AI assistant designed for learning, problem-solving, coding, engineering, and everyday questions.
+SYSTEM_PROMPT = """You are SmartChat AI, a highly capable, intelligent, and friendly AI assistant designed for learning, problem-solving, coding, engineering, and everyday questions across any field (Film, Sports, Education, Science, History, Technology, etc.).
 
 Core Guidelines:
-1. Accuracy & Reliability: Provide factual, precise, and well-reasoned answers. Distinguish facts from opinions. If you do not know an answer or lack verified information (such as private real-time data or unknown trivia), explicitly state uncertainty rather than hallucinating.
-2. Engineering & Educational Focus: For computer science, engineering, mathematics, science, and academic topics, explain concepts clearly with intuitive explanations, step-by-step derivations, and real-world analogies suitable for engineering students.
+1. Accuracy & Reliability: Provide factual, precise, and well-reasoned answers. Distinguish facts from opinions. If you do not know an answer or lack verified information, explicitly state uncertainty rather than hallucinating.
+2. Multi-Domain & Educational Focus: For cinema, sports, education, science, mathematics, literature, and technology, explain concepts clearly with intuitive explanations and structured frameworks.
 3. Code & Programming:
    - Provide clean, robust, and commented code examples.
    - Always wrap code in standard Markdown code blocks with appropriate language identifiers (e.g., ```python, ```javascript, ```java, ```cpp, ```html, ```sql).
@@ -49,15 +56,16 @@ Core Guidelines:
 4. Formatting & Readability:
    - Structure responses logically using Markdown headers (###), bold text, bullet lists, and numbered steps.
    - Keep answers concise for simple questions, and thorough/structured for complex problems.
-5. Entertainment, Culture & General Knowledge:
-   - For film, history, literature, and general knowledge, provide verified facts without inventing movie titles, cast lists, release years, or awards.
-6. Tone: Professional, encouraging, respectful, and articulate.
+5. Tone: Professional, encouraging, respectful, and articulate.
 """
 
 from nlp_model import SmartChatNLPModel
 
-# Initialize Local NLP Model
-nlp_engine = SmartChatNLPModel(dataset_path="dataset.json", model_cache_path="smartchat_model.pkl")
+# Initialize Local NLP Model with absolute paths
+nlp_engine = SmartChatNLPModel(
+    dataset_path=os.path.join(BASE_DIR, "dataset.json"),
+    model_cache_path=os.path.join(BASE_DIR, "smartchat_model.pkl")
+)
 
 # Supported API Providers
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
@@ -88,86 +96,59 @@ def get_active_provider():
 
 
 def call_gemini_api(user_message, history=None):
-    """Call Google Gemini REST API."""
-    import requests
+    """Call Google Gemini Generative AI API using official SDK."""
+    from google import genai
+    from google.genai import types
 
-    raw_contents = []
+    # Reload key and model from .env if needed
+    current_key = os.getenv("GEMINI_API_KEY", GEMINI_API_KEY).strip()
+    current_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash").strip()
 
-    # Include system instruction via system_instruction field or prepend to first message
+    if not current_key or current_key.startswith("your_"):
+        raise Exception("GEMINI_API_KEY is not configured in .env")
+
+    client = genai.Client(api_key=current_key)
+
+    # Models to try in order
+    models_to_try = [current_model, "gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-2.5-pro", "gemini-pro-latest"]
+    seen = set()
+    models_to_try = [m for m in models_to_try if m and not (m in seen or seen.add(m))]
+
+    # Build prompt/history contents
+    contents = []
     if history and isinstance(history, list):
-        for msg in history[-8:]:  # keep last 8 messages for context
+        for msg in history[-8:]:
             role = "user" if msg.get("role") == "user" else "model"
             text = msg.get("content", "").strip()
             if text:
-                raw_contents.append({"role": role, "parts": [{"text": text}]})
+                contents.append(types.Content(role=role, parts=[types.Part.from_text(text=text)]))
 
-    # Add current user message
-    raw_contents.append({"role": "user", "parts": [{"text": user_message}]})
+    contents.append(types.Content(role="user", parts=[types.Part.from_text(text=user_message)]))
 
-    # Ensure alternating turns (Gemini API requirement)
-    contents = []
-    for item in raw_contents:
-        if contents and contents[-1]["role"] == item["role"]:
-            contents[-1]["parts"].extend(item["parts"])
-        else:
-            contents.append(item)
-
-    # Models to try in order
-    models_to_try = [GEMINI_MODEL, "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
-    # Remove duplicates while preserving order
-    seen = set()
-    models_to_try = [m for m in models_to_try if not (m in seen or seen.add(m))]
+    config = types.GenerateContentConfig(
+        system_instruction=SYSTEM_PROMPT,
+        temperature=0.7,
+        max_output_tokens=2048,
+        top_p=0.95
+    )
 
     last_error = None
     for model_name in models_to_try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
-        payload = {
-            "system_instruction": {
-                "parts": [{"text": SYSTEM_PROMPT}]
-            },
-            "contents": contents,
-            "generationConfig": {
-                "temperature": 0.7,
-                "maxOutputTokens": 2048,
-                "topP": 0.95
-            }
-        }
-
         try:
-            logger.info(f"Calling Gemini API with model: {model_name}")
-            resp = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=25)
-            
-            if resp.status_code == 200:
-                data = resp.json()
-                candidates = data.get("candidates", [])
-                if candidates:
-                    parts = candidates[0].get("content", {}).get("parts", [])
-                    if parts:
-                        return parts[0].get("text", "")
-                return "I received your message, but no response text was generated. Please try rephrasing."
-            elif resp.status_code == 404:
-                # Try next model if 404
-                logger.warning(f"Model {model_name} returned 404, trying alternate model...")
-                last_error = f"Model {model_name} not found"
-                continue
-            elif resp.status_code == 429:
-                return "The AI rate limit was reached. Please wait a few seconds and try again."
-            else:
-                err_data = resp.json().get("error", {}) if resp.headers.get("content-type", "").startswith("application/json") else {}
-                err_msg = err_data.get("message", resp.text)
-                logger.error(f"Gemini API error ({resp.status_code}): {err_msg}")
-                last_error = f"Gemini API returned error {resp.status_code}: {err_msg}"
-                break
-        except requests.exceptions.Timeout:
-            logger.error("Gemini API request timed out.")
-            last_error = "The AI service timed out while generating a response. Please try again."
-            break
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Network error calling Gemini API: {e}")
-            last_error = f"Network connection error: {e}"
-            break
+            logger.info(f"Calling Google Gemini API with model: {model_name}")
+            resp = client.models.generate_content(
+                model=model_name,
+                contents=contents,
+                config=config
+            )
+            if resp and resp.text:
+                return resp.text
+        except Exception as e:
+            err_str = str(e)
+            logger.warning(f"Gemini model {model_name} failed: {err_str[:150]}")
+            last_error = e
 
-    raise Exception(last_error or "Unable to generate response from Gemini API.")
+    raise last_error if last_error else Exception("Gemini generation failed: No models succeeded.")
 
 
 def call_openai_compatible_api(endpoint, api_key, model, user_message, history=None):
@@ -362,44 +343,27 @@ def generate_ai_response(user_message, history=None, requested_model=None):
     or the local NLP model engine.
     """
     active_provider, default_model = get_active_provider()
-    
+
+    req_lower = requested_model.lower().strip() if requested_model else ""
+
     # If client explicitly selected Local NLP, use local engine
-    if not requested_model or requested_model in ("local-nlp", "SmartChat-NLP"):
+    if req_lower in ("local-nlp", "smartchat-nlp", "local"):
         logger.info("Executing SmartChat Local NLP Model Engine...")
         reply = nlp_engine.generate_response(user_message)
         return reply, "SmartChat-NLP (Local)"
 
-    req_lower = requested_model.lower() if requested_model else ""
+    # Determine provider
     provider_to_use = None
-
     if "gemini" in req_lower:
-        if GEMINI_API_KEY and not GEMINI_API_KEY.startswith("your_"):
-            provider_to_use = "Gemini"
-        else:
-            logger.info("Gemini requested but no API key configured. Using Local NLP with notice.")
-            local_reply = nlp_engine.generate_response(user_message)
-            notice = "> ℹ️ **Notice**: Google Gemini API key is not configured in `.env`. Responding using the built-in **SmartChat Local NLP Engine**.\n\n"
-            return notice + local_reply, "SmartChat-NLP (Local)"
-
+        provider_to_use = "Gemini"
     elif "groq" in req_lower:
-        if GROQ_API_KEY and not GROQ_API_KEY.startswith("your_"):
-            provider_to_use = "Groq"
-        else:
-            logger.info("Groq requested but no API key configured. Using Local NLP with notice.")
-            local_reply = nlp_engine.generate_response(user_message)
-            notice = "> ℹ️ **Notice**: Groq API key is not configured in `.env`. Responding using the built-in **SmartChat Local NLP Engine**.\n\n"
-            return notice + local_reply, "SmartChat-NLP (Local)"
-
+        provider_to_use = "Groq"
     elif "openai" in req_lower:
-        if OPENAI_API_KEY and not OPENAI_API_KEY.startswith("your_"):
-            provider_to_use = "OpenAI"
-        else:
-            logger.info("OpenAI requested but no API key configured. Using Local NLP with notice.")
-            local_reply = nlp_engine.generate_response(user_message)
-            notice = "> ℹ️ **Notice**: OpenAI API key is not configured in `.env`. Responding using the built-in **SmartChat Local NLP Engine**.\n\n"
-            return notice + local_reply, "SmartChat-NLP (Local)"
-
+        provider_to_use = "OpenAI"
+    elif "openrouter" in req_lower:
+        provider_to_use = "OpenRouter"
     else:
+        # Default to configured active provider
         provider_to_use = active_provider
 
     logger.info(f"Routing request to provider: {provider_to_use}")

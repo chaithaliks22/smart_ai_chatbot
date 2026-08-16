@@ -1,7 +1,7 @@
 """
 SmartChat AI — Standalone Model Training & Evaluation Pipeline
 Run this script to train the local NLP model, evaluate accuracy,
-and serialize weights for deployment.
+and serialize weights for multi-domain deployment.
 """
 
 import os
@@ -17,7 +17,12 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from nlp_model import SmartChatNLPModel, preprocess_text
+# Ensure correct base path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
+from nlp_model import SmartChatNLPModel, preprocess_text, DEFAULT_DATASET, DEFAULT_CACHE
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -26,12 +31,12 @@ from sklearn.metrics import classification_report, accuracy_score
 
 def run_training_pipeline():
     print("\n=======================================================")
-    print("  🧠 SMARTCHAT AI — NLP MODEL TRAINING PIPELINE")
+    print("  🧠 SMARTCHAT AI — MULTI-DOMAIN NLP TRAINING PIPELINE")
     print("=======================================================\n")
 
     start_time = time.time()
 
-    dataset_file = "dataset.json"
+    dataset_file = DEFAULT_DATASET
     if not os.path.exists(dataset_file):
         print(f"Error: {dataset_file} not found!")
         sys.exit(1)
@@ -55,7 +60,7 @@ def run_training_pipeline():
     total_intents = len(intents)
     total_samples = len(patterns)
     print(f"   ✓ Loaded {total_intents} Intent Categories")
-    print(f"   ✓ Loaded {total_samples} Training Patterns\n")
+    print(f"   ✓ Loaded {total_samples} Training Patterns across multiple domains (Film, Sports, Education, Science, History, Tech)\n")
 
     print("2. Extracting Features using TF-IDF (Unigrams + Bigrams)...")
     vectorizer = TfidfVectorizer(
@@ -69,7 +74,7 @@ def run_training_pipeline():
     print(f"   ✓ Vocabulary Size: {vocab_size} unique n-gram features\n")
 
     print("3. Training Multi-Class Intent Classifier...")
-    model = LogisticRegression(C=5.0, max_iter=300, random_state=42)
+    model = LogisticRegression(C=4.0, max_iter=400, random_state=42)
     model.fit(X, y)
 
     # 4. Stratified Cross-Validation Evaluation
@@ -87,25 +92,29 @@ def run_training_pipeline():
     print(f"   ✓ Stratified CV Score ({cv_splits}-Fold): {scores.mean() * 100:.2f}% (+/- {scores.std() * 100:.2f}%)\n")
 
     print("4. Serializing Model Weights...")
-    nlp_engine = SmartChatNLPModel(dataset_path=dataset_file)
+    nlp_engine = SmartChatNLPModel(dataset_path=dataset_file, model_cache_path=DEFAULT_CACHE)
     nlp_engine.train()
 
     elapsed = time.time() - start_time
-    print(f"   ✓ Model serialized to 'smartchat_model.pkl' in {elapsed:.3f}s\n")
+    print(f"   ✓ Model serialized to '{DEFAULT_CACHE}' in {elapsed:.3f}s\n")
 
     print("=======================================================")
     print("  🎉 TRAINING COMPLETE — MODEL READY FOR INFERENCE!")
     print("=======================================================\n")
 
-    # Interactive test loop demonstration
+    # Interactive test loop across different fields
     sample_queries = [
-        "What is machine learning?",
-        "Explain DBMS normalization",
-        "Give me final year project ideas",
-        "How do I debug Python exceptions?"
+        "Tell me about the film industry and cinema",
+        "What are the rules and formats of cricket?",
+        "How is football soccer played in world cup?",
+        "Explain higher education degrees and research",
+        "What is the best way to study effectively using Feynman technique?",
+        "What is machine learning and deep learning?",
+        "Tell me about physics and astronomy",
+        "Explain DBMS normalization 1NF 2NF 3NF"
     ]
 
-    print("Sample Model Inferences:")
+    print("Sample Multi-Domain Inferences:")
     for query in sample_queries:
         tag, conf, sim = nlp_engine.predict_intent(query)
         print(f" - Query: '{query}'")
