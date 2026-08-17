@@ -27,3 +27,8 @@ instance/
 
 # Logs
 *.log
+
+# SQLite Database
+*.db
+users.db
+

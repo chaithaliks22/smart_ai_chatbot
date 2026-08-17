@@ -82,6 +82,33 @@
           <span class="status-dot"></span>
           <span class="status-text">{{ provider }} Engine Active</span>
         </div>
+
+        <!-- Sidebar Navigation Buttons -->
+        <button class="btn btn-secondary sidebar-action-btn" id="sidebarSettingsBtn" title="Application Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>⚙️ Settings</span>
+        </button>
+
+        <button class="btn btn-secondary sidebar-action-btn" id="sidebarThemeToggleBtn" title="Toggle Dark / Light Mode">
+          <svg class="theme-icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+          </svg>
+          <span class="theme-label-text">🌙 Dark / Light Mode</span>
+        </button>
+
+        <button class="btn btn-secondary sidebar-action-btn" id="sidebarAuthBtn" title="Sign In or Manage Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span id="sidebarAuthLabel">👤 Sign In / Register</span>
+        </button>
+
         <button class="btn-clear-history" id="clearAllHistoryBtn" title="Clear all chat history">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3 6 5 6 21 6"></polyline>
@@ -98,58 +125,28 @@
       <!-- Top Navigation Bar -->
       <header class="app-header">
         <div class="header-left">
-          <button class="icon-btn mobile-menu-btn" id="openSidebarBtn" title="Open Menu" aria-label="Open sidebar menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-          
-          <div class="header-title-group">
-            <h1 class="header-title">SmartChat AI</h1>
-            <div class="model-selector-wrap">
-              <select id="modelSelector" class="model-select-dropdown" title="Select AI Model / Pipeline">
-                <option value="SmartChat-NLP" selected>🧠 Local NLP Engine</option>
-                <option value="Gemini">⚡ Google Gemini 2.5</option>
-                <option value="Groq">🚀 Groq Llama 3.3</option>
-                <option value="OpenAI">🌐 OpenAI GPT-4o-mini</option>
-              </select>
-            </div>
+          <h1 class="header-title">SmartChat AI</h1>
+          <div class="model-selector-wrap">
+            <select id="modelSelector" class="model-select-dropdown" title="Select AI Model / Pipeline">
+              <option value="Groq" selected>🚀 Groq Llama 3.3 70B (Active)</option>
+              <option value="SmartChat-NLP">🧠 Local NLP Engine</option>
+              <option value="Gemini">⚡ Google Gemini 2.5</option>
+              <option value="OpenAI">🌐 OpenAI GPT-4o-mini</option>
+            </select>
+            <select id="personaSelector" class="model-select-dropdown persona-dropdown" title="Select AI Response Persona / Tone">
+              <option value="standard" selected>🎯 Standard AI</option>
+              <option value="coder">💻 Code Specialist</option>
+              <option value="academic">📚 Academic & Viva Prep</option>
+              <option value="concise">⚡ Quick & Concise</option>
+            </select>
           </div>
         </div>
 
         <div class="header-right">
-          <!-- Model Diagnostics Info Button -->
-          <button class="icon-btn header-action-btn" id="modelInfoBtn" title="View ML Model Architecture & Stats" aria-label="Model Architecture & Diagnostics">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-          </button>
-
-          <!-- Quick New Chat on Header (Mobile & Desktop) -->
-          <button class="icon-btn header-action-btn" id="headerNewChatBtn" title="Start New Chat" aria-label="Start new chat">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </button>
-
-
-          <!-- Clear Current Chat Button -->
-          <button class="icon-btn header-action-btn" id="clearChatBtn" title="Clear current chat" aria-label="Clear current conversation">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-          </button>
-
-          <!-- Theme Toggle Button -->
+          <!-- Theme Toggle Button (Quick Dark/Light) -->
           <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark / Light Theme" aria-label="Toggle theme">
             <!-- Sun Icon (Light mode) -->
-            <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -161,8 +158,28 @@
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
             <!-- Moon Icon (Dark mode) -->
-            <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <!-- Multiple Themes Palette Picker Button -->
+          <button class="icon-btn header-action-btn" id="themePickerBtn" title="Choose Chat Theme & Color Palette" aria-label="Multiple Chat Themes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+            </svg>
+          </button>
+
+          <!-- Model Diagnostics Info Button ("i") -->
+          <button class="icon-btn header-action-btn" id="modelInfoBtn" title="View ML Model Architecture & Stats" aria-label="Model Architecture & Diagnostics">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
           </button>
         </div>
@@ -180,8 +197,27 @@
               </svg>
             </div>
           </div>
-          <h2 class="welcome-title">Hello! I'm SmartChat AI</h2>
-          <p class="welcome-subtitle">Your intelligent AI assistant for learning, ideas, problem solving and everyday questions.</p>
+          <h2 class="welcome-title">Your Intelligent AI Assistant</h2>
+          <p class="welcome-subtitle">Ask questions, learn new things, explore ideas, and get helpful AI-powered responses.</p>
+
+          <!-- Start Chatting Hero CTA Button -->
+          <div class="hero-cta-wrap">
+            <button class="btn btn-primary btn-start-chatting" id="startChattingHeroBtn" title="Start Chatting with SmartChat AI">
+              <span>Start Chatting</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Live Feature Highlight Pills -->
+          <div class="hero-feature-pills">
+            <span class="hero-pill">⚡ Groq Llama 3.3 70B Active</span>
+            <span class="hero-pill">🎙️ Voice Assistant (STT &amp; TTS)</span>
+            <span class="hero-pill">🎨 6 Custom Themes</span>
+            <span class="hero-pill">🔐 Cloud History &amp; Auth</span>
+          </div>
 
           <!-- Suggestion Cards Grid -->
           <div class="suggestions-grid" id="suggestionsGrid">
@@ -193,11 +229,11 @@
               </div>
               <div class="suggestion-text">
                 <strong>Explain Machine Learning</strong>
-                <span>Concepts, categories & algorithms</span>
+                <span>Supervised, Unsupervised & Pipelines</span>
               </div>
             </button>
 
-            <button class="suggestion-card" data-prompt="Help me debug Python code: What are the best practices for handling exceptions and debugging in Python?">
+            <button class="suggestion-card" data-prompt="Write a clean Python program for Binary Search with full explanation and time complexity.">
               <div class="suggestion-icon code-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="16 18 22 12 16 6"></polyline>
@@ -205,8 +241,8 @@
                 </svg>
               </div>
               <div class="suggestion-text">
-                <strong>Help me debug Python</strong>
-                <span>Exception types, tracebacks & fixes</span>
+                <strong>Python Algorithms &amp; Code</strong>
+                <span>Binary search, OOP &amp; complexity analysis</span>
               </div>
             </button>
 
@@ -219,8 +255,8 @@
                 </svg>
               </div>
               <div class="suggestion-text">
-                <strong>Give me project ideas</strong>
-                <span>AI, Full-stack & Web capstones</span>
+                <strong>Innovative Project Ideas</strong>
+                <span>AI, Full-stack &amp; Web capstones</span>
               </div>
             </button>
 
@@ -233,8 +269,8 @@
                 </svg>
               </div>
               <div class="suggestion-text">
-                <strong>Explain DBMS normalization</strong>
-                <span>1NF, 2NF, 3NF & BCNF summary</span>
+                <strong>Explain DBMS Normalization</strong>
+                <span>1NF, 2NF, 3NF &amp; BCNF with examples</span>
               </div>
             </button>
           </div>
@@ -266,11 +302,67 @@
 
       <!-- Bottom Chat Input Section -->
       <footer class="chat-input-section">
+        
+        <!-- Voice Assistant Active Speaking Playback Bar -->
+        <div class="voice-speaking-bar" id="voiceSpeakingBar" style="display: none;">
+          <div class="speaking-wave">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+          <div class="speaking-info">
+            <span class="speaking-status">SmartChat AI is speaking...</span>
+            <span class="speaking-voice-name" id="speakingVoiceName">Natural Voice</span>
+          </div>
+          <div class="speaking-controls">
+            <button type="button" class="btn-speaking-ctrl" id="voicePauseResumeBtn" title="Pause / Resume speech">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+              <span id="voicePauseText">Pause</span>
+            </button>
+            <button type="button" class="btn-speaking-ctrl btn-speaking-stop" id="voiceStopSpeechBtn" title="Stop speaking">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              </svg>
+              <span>Stop</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice Input Live HUD (Overlay when Listening) -->
+        <div class="voice-listening-overlay" id="voiceListeningOverlay" style="display: none;">
+          <div class="listening-header">
+            <div class="listening-pulse-dot"></div>
+            <span class="listening-title">Listening to your voice...</span>
+            <div class="listening-wave-anim">
+              <span class="listen-wave"></span>
+              <span class="listen-wave"></span>
+              <span class="listen-wave"></span>
+              <span class="listen-wave"></span>
+              <span class="listen-wave"></span>
+            </div>
+          </div>
+          <p class="listening-transcript" id="voiceLiveTranscript">Say something, e.g. "Explain Binary Search in Python"...</p>
+          <div class="listening-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="voiceCancelListenBtn">Cancel</button>
+            <button type="button" class="btn btn-primary btn-sm" id="voiceSendLiveBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+              <span>Send Now</span>
+            </button>
+          </div>
+        </div>
+
         <form class="chat-input-form" id="chatForm" onsubmit="return false;">
           <div class="input-container">
             
-            <!-- Voice Input Button (Bonus Feature) -->
-            <button type="button" class="icon-btn voice-btn" id="voiceBtn" title="Voice Input (Speech-to-Text)" aria-label="Use voice input">
+            <!-- Voice Input Button -->
+            <button type="button" class="icon-btn voice-btn" id="voiceBtn" title="Voice Input (Speech-to-Text) - Click to talk" aria-label="Use voice input">
               <svg class="mic-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
@@ -284,7 +376,7 @@
             <textarea
               id="messageInput"
               class="chat-textarea"
-              placeholder="Ask anything... (Press Enter to send, Shift + Enter for new line)"
+              placeholder="Ask anything or click the microphone to speak... (Enter to send)"
               rows="1"
               maxlength="4000"
               aria-label="Chat input message"
@@ -302,7 +394,7 @@
         </form>
 
         <div class="input-footer-info">
-          <span>SmartChat AI can assist with education, programming & everyday problem solving.</span>
+          <span>SmartChat AI with Voice Assistant • Speak or type in real-time</span>
         </div>
       </footer>
     </main>
@@ -318,6 +410,83 @@
       <div class="modal-actions">
         <button class="btn btn-secondary" id="modalCancelBtn">Cancel</button>
         <button class="btn btn-danger" id="modalConfirmBtn">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice Assistant Settings Modal -->
+  <div class="modal-overlay" id="voiceSettingsModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card voice-settings-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">🎙️</div>
+          <h3 class="modal-title">Voice Assistant Settings</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeVoiceSettingsBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body voice-settings-body">
+        
+        <div class="setting-row">
+          <div class="setting-label-wrap">
+            <label class="setting-title" for="voiceSelect">AI Assistant Voice</label>
+            <span class="setting-desc">Choose your preferred synthesized reading voice</span>
+          </div>
+          <select id="voiceSelect" class="form-select"></select>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label-wrap">
+            <label class="setting-title" for="voiceRateSlider">Speech Speed (Rate): <span id="voiceRateVal">1.0x</span></label>
+            <span class="setting-desc">Control how fast the assistant speaks</span>
+          </div>
+          <input type="range" id="voiceRateSlider" min="0.7" max="1.6" step="0.05" value="1.0" class="form-range">
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label-wrap">
+            <label class="setting-title" for="voicePitchSlider">Speech Pitch: <span id="voicePitchVal">1.0</span></label>
+            <span class="setting-desc">Adjust vocal pitch frequency</span>
+          </div>
+          <input type="range" id="voicePitchSlider" min="0.7" max="1.4" step="0.05" value="1.0" class="form-range">
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="setting-label-wrap">
+            <label class="setting-title" for="autoSpeakToggle">Auto-Speak Responses</label>
+            <span class="setting-desc">Automatically read AI answers aloud when they arrive</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="autoSpeakToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="setting-label-wrap">
+            <label class="setting-title" for="autoSendVoiceToggle">Auto-Send on Speech End</label>
+            <span class="setting-desc">Send message automatically when you stop speaking</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="autoSendVoiceToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="testVoiceBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span>Test Voice</span>
+        </button>
+        <button type="button" class="btn btn-primary" id="saveVoiceSettingsBtn">Save & Close</button>
       </div>
     </div>
   </div>
@@ -369,6 +538,518 @@
     </div>
   </div>
 
+
+  <!-- User Authentication Modal (Login / Sign Up) -->
+  <div class="modal-overlay" id="authModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">🔐</div>
+          <h3 class="modal-title" id="authModalTitle">Welcome to SmartChat AI</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeAuthModalBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Auth Navigation Tabs -->
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="authTabLogin" data-tab="login">Sign In</button>
+        <button type="button" class="auth-tab" id="authTabRegister" data-tab="register">Create Account</button>
+      </div>
+
+      <div class="modal-body auth-modal-body">
+        
+        <!-- Google Quick Sign-In Button -->
+        <div class="social-auth-section">
+          <button type="button" class="btn-google-auth" id="googleAuthBtn">
+            <svg class="google-icon" width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+        </div>
+
+        <div class="auth-divider">
+          <span>or continue with email</span>
+        </div>
+
+        <!-- Feedback Alert Banner -->
+        <div class="auth-alert" id="authAlert" style="display: none;"></div>
+
+        <!-- 1. Sign In Form -->
+        <form class="auth-form" id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email Address</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" id="loginEmail" class="form-input" placeholder="you@example.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="loginPassword">Password</label>
+              <button type="button" class="btn-link-sm" id="openForgotFromLoginBtn">Forgot password?</button>
+            </div>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="btn-toggle-pwd" data-target="loginPassword" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="loginSubmitBtn">
+            <span>Sign In</span>
+          </button>
+        </form>
+
+        <!-- 2. Registration Form (Sign Up) -->
+        <form class="auth-form" id="registerForm" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="registerName">Full Name</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" id="registerName" class="form-input" placeholder="Alex Morgan" required autocomplete="name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="registerEmail">Email Address</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" id="registerEmail" class="form-input" placeholder="alex@example.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="registerPassword">Password (min. 6 characters)</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="registerPassword" class="form-input" placeholder="Create a secure password" minlength="6" required autocomplete="new-password">
+              <button type="button" class="btn-toggle-pwd" data-target="registerPassword" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="registerPasswordConfirm">Confirm Password</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Re-enter password" minlength="6" required autocomplete="new-password">
+              <button type="button" class="btn-toggle-pwd" data-target="registerPasswordConfirm" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="registerSubmitBtn">
+            <span>Create Free Account</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Recovery Modal -->
+  <div class="modal-overlay" id="forgotPasswordModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">🔑</div>
+          <h3 class="modal-title">Reset Your Password</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeForgotModalBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body auth-modal-body">
+        
+        <!-- Feedback Alert Banner -->
+        <div class="auth-alert" id="forgotAlert" style="display: none;"></div>
+
+        <!-- Step 1: Request Reset Code -->
+        <form class="auth-form" id="forgotStep1Form">
+          <p class="auth-subtext">Enter your registered email address. We'll generate a 6-digit verification reset code for you.</p>
+          
+          <div class="form-group">
+            <label class="form-label" for="forgotEmail">Registered Email Address</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <input type="email" id="forgotEmail" class="form-input" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="sendResetCodeBtn">
+            <span>Send Reset Code</span>
+          </button>
+          
+          <div class="auth-footer-link">
+            <button type="button" class="btn-link" id="backToLoginFromForgotBtn">← Back to Sign In</button>
+          </div>
+        </form>
+
+        <!-- Step 2: Enter Code & New Password -->
+        <form class="auth-form" id="forgotStep2Form" style="display: none;">
+          <p class="auth-subtext">Enter the 6-digit verification code and your new password.</p>
+          
+          <div class="form-group">
+            <label class="form-label" for="resetCodeInput">6-Digit Verification Code</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <input type="text" id="resetCodeInput" class="form-input code-input" placeholder="123456" maxlength="6" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resetNewPassword">New Password (min. 6 chars)</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="resetNewPassword" class="form-input" placeholder="Enter new password" minlength="6" required>
+              <button type="button" class="btn-toggle-pwd" data-target="resetNewPassword" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resetNewPasswordConfirm">Confirm New Password</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <input type="password" id="resetNewPasswordConfirm" class="form-input" placeholder="Re-enter new password" minlength="6" required>
+              <button type="button" class="btn-toggle-pwd" data-target="resetNewPasswordConfirm" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="submitResetPasswordBtn">
+            <span>Reset Password & Sign In</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Instant Sign-In / Account Selector Modal -->
+  <div class="modal-overlay" id="googlePromptModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card google-prompt-card">
+      <div class="google-prompt-header">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <div class="google-prompt-title-wrap">
+          <h4>Sign in with Google</h4>
+          <span>to continue to SmartChat AI</span>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeGooglePromptBtn">✕</button>
+      </div>
+
+      <div class="google-prompt-body">
+        <p class="google-prompt-desc">Choose an account to continue to SmartChat AI:</p>
+        
+        <!-- Pre-populated Google accounts or custom -->
+        <div class="google-account-list">
+          <button type="button" class="google-account-item" id="googleDemoAccount1">
+            <div class="google-avatar" style="background-color: #4285F4;">G</div>
+            <div class="google-account-info">
+              <strong>Demo Google User</strong>
+              <span>google.student@smartchat.ai</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="google-custom-input-wrap">
+          <label class="form-label" for="googleCustomEmail">Or enter your Google email:</label>
+          <div class="input-icon-wrap">
+            <input type="email" id="googleCustomEmail" class="form-input" placeholder="your.name@gmail.com">
+          </div>
+          <button type="button" class="btn btn-secondary btn-block" id="googleCustomSubmitBtn" style="margin-top: 8px;">
+            <span>Continue with this Google Email</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple Chat Themes Palette Picker Modal -->
+  <div class="modal-overlay" id="themePickerModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card theme-picker-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">🎨</div>
+          <h3 class="modal-title">Select Chat Theme & Palette</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeThemePickerBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="auth-subtext">Personalize your chat experience with our custom-crafted aesthetics:</p>
+        
+        <div class="theme-grid" id="themeGrid">
+          <!-- 1. Midnight Dark -->
+          <div class="theme-card-item active" data-theme-val="midnight">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #090D16;"></div>
+              <div class="swatch-accent" style="background: #2563EB;"></div>
+            </div>
+            <span class="theme-card-label">🌌 Midnight</span>
+            <span class="theme-tag">Default Dark</span>
+          </div>
+
+          <!-- 2. Pure Daylight -->
+          <div class="theme-card-item" data-theme-val="light">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #F8FAFC; border: 1px solid #CBD5E1;"></div>
+              <div class="swatch-accent" style="background: #2563EB;"></div>
+            </div>
+            <span class="theme-card-label">☀️ Daylight</span>
+            <span class="theme-tag">Clean Light</span>
+          </div>
+
+          <!-- 3. Emerald Forest -->
+          <div class="theme-card-item" data-theme-val="emerald">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #05130D;"></div>
+              <div class="swatch-accent" style="background: #10B981;"></div>
+            </div>
+            <span class="theme-card-label">🌲 Emerald</span>
+            <span class="theme-tag">Forest Mint</span>
+          </div>
+
+          <!-- 4. Cyberpunk Amethyst -->
+          <div class="theme-card-item" data-theme-val="cyberpunk">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #0D0718;"></div>
+              <div class="swatch-accent" style="background: #A855F7;"></div>
+            </div>
+            <span class="theme-card-label">🔮 Cyberpunk</span>
+            <span class="theme-tag">Neon Amethyst</span>
+          </div>
+
+          <!-- 5. Sunset Amber -->
+          <div class="theme-card-item" data-theme-val="sunset">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #140B07;"></div>
+              <div class="swatch-accent" style="background: #F97316;"></div>
+            </div>
+            <span class="theme-card-label">🌅 Sunset</span>
+            <span class="theme-tag">Amber Glow</span>
+          </div>
+
+          <!-- 6. Oceanic Cyan -->
+          <div class="theme-card-item" data-theme-val="ocean">
+            <div class="theme-swatch">
+              <div class="swatch-bg" style="background: #041017;"></div>
+              <div class="swatch-accent" style="background: #06B6D4;"></div>
+            </div>
+            <span class="theme-card-label">🌊 Oceanic</span>
+            <span class="theme-tag">Electric Cyan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="applyThemeBtn">Apply & Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About SmartChat AI Modal -->
+  <div class="modal-overlay" id="aboutModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card about-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">ℹ️</div>
+          <h3 class="modal-title">About SmartChat AI</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeAboutModalBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body about-modal-body">
+        <p class="about-hero-text">
+          <strong>SmartChat AI</strong> is a modern AI-powered chatbot web application developed using Python, Flask, HTML, CSS and JavaScript.
+        </p>
+        
+        <h4 class="about-section-heading">Core Technologies &amp; Architecture:</h4>
+        <div class="about-tech-grid">
+          <div class="tech-item">
+            <span class="tech-badge">Python</span>
+            <span class="tech-desc">Core programming language powering the backend server and ML pipelines.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">Flask</span>
+            <span class="tech-desc">Lightweight and flexible web framework for REST API routing and session management.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">HTML5</span>
+            <span class="tech-desc">Semantic, accessible document structure for desktop and mobile devices.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">CSS3</span>
+            <span class="tech-desc">Custom CSS design system with CSS variables, 6 theme palettes, and glassmorphism.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">JavaScript (ES6+)</span>
+            <span class="tech-desc">Client-side interactivity, asynchronous Fetch API, and Web Speech API.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">AI API Engine</span>
+            <span class="tech-desc">Groq Llama 3.3 70B, Google Gemini, OpenAI GPT-4o-mini &amp; scikit-learn Local NLP.</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge">SQLite</span>
+            <span class="tech-desc">Lightweight, reliable relational database for user authentication and chat history.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="closeAboutModalActionBtn">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card settings-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">⚙️</div>
+          <h3 class="modal-title">Application Settings</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeSettingsModalBtn" title="Close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body settings-modal-body">
+        <!-- Setting 1: Theme Switch -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Interface Theme</strong>
+            <span>Switch between Dark Mode and Light Mode</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="settingsThemeToggleBtn">
+            <span>Toggle Theme</span>
+          </button>
+        </div>
+
+        <!-- Setting 2: Themes Palette -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Color Palette</strong>
+            <span>Select from 6 custom curated color themes</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="settingsOpenThemePickerBtn">
+            <span>Choose Theme (🎨)</span>
+          </button>
+        </div>
+
+        <!-- Setting 3: AI Response Persona -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>AI Response Persona</strong>
+            <span>Customize answering style &amp; tone</span>
+          </div>
+          <select id="settingsPersonaSelect" class="form-input form-input-sm" style="width: auto; max-width: 170px;">
+            <option value="standard">🎯 Standard AI</option>
+            <option value="coder">💻 Code Specialist</option>
+            <option value="academic">📚 Academic Prep</option>
+            <option value="concise">⚡ Quick &amp; Concise</option>
+          </select>
+        </div>
+
+        <!-- Setting 4: Voice Assistant -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Voice Assistant</strong>
+            <span>Configure AI speech synthesis voice and speed</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="settingsVoiceConfigBtn">
+            <span>Voice Options (🎙️)</span>
+          </button>
+        </div>
+
+        <!-- Setting 5: Clear Current Chat -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Clear Current Conversation</strong>
+            <span>Reset current chat view to welcome screen</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="settingsClearChatBtn">
+            <span>Clear Current</span>
+          </button>
+        </div>
+
+        <!-- Setting 6: Clear All History -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong class="text-danger">Clear All Chat History</strong>
+            <span>Permanently wipe all past conversations</span>
+          </div>
+          <button type="button" class="btn btn-danger btn-sm" id="settingsClearAllHistoryBtn">
+            <span>Wipe History</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="settingsOpenAboutBtn">About SmartChat AI</button>
+        <button type="button" class="btn btn-primary" id="saveSettingsCloseBtn">Done</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast Notification -->
   <div class="toast-notification" id="toastNotification" role="status" aria-live="polite">

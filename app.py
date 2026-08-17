@@ -10,7 +10,8 @@ import time
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
+import database
 
 # Ensure UTF-8 output on Windows consoles
 if hasattr(sys.stdout, "reconfigure"):
@@ -82,14 +83,18 @@ OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instr
 
 
 def get_active_provider():
-    """Detect which AI API provider is configured."""
-    if GEMINI_API_KEY and not GEMINI_API_KEY.startswith("your_"):
-        return "Gemini", GEMINI_MODEL
-    if GROQ_API_KEY and not GROQ_API_KEY.startswith("your_"):
-        return "Groq", GROQ_MODEL
-    if OPENAI_API_KEY and not OPENAI_API_KEY.startswith("your_"):
+    """Detect which AI API provider is configured, prioritizing Groq Llama 3.3."""
+    groq_key = os.getenv("GROQ_API_KEY", GROQ_API_KEY).strip()
+    if groq_key and not groq_key.startswith("your_"):
+        return "Groq", os.getenv("GROQ_MODEL", GROQ_MODEL).strip()
+    gemini_key = os.getenv("GEMINI_API_KEY", GEMINI_API_KEY).strip()
+    if gemini_key and not gemini_key.startswith("your_"):
+        return "Gemini", os.getenv("GEMINI_MODEL", GEMINI_MODEL).strip()
+    openai_key = os.getenv("OPENAI_API_KEY", OPENAI_API_KEY).strip()
+    if openai_key and not openai_key.startswith("your_"):
         return "OpenAI", OPENAI_MODEL
-    if OPENROUTER_API_KEY and not OPENROUTER_API_KEY.startswith("your_"):
+    openrouter_key = os.getenv("OPENROUTER_API_KEY", OPENROUTER_API_KEY).strip()
+    if openrouter_key and not openrouter_key.startswith("your_"):
         return "OpenRouter", OPENROUTER_MODEL
     return "SmartChat-NLP", "Local-Neural-Engine"
 
@@ -151,11 +156,33 @@ def call_gemini_api(user_message, history=None):
     raise last_error if last_error else Exception("Gemini generation failed: No models succeeded.")
 
 
-def call_openai_compatible_api(endpoint, api_key, model, user_message, history=None):
-    """Call OpenAI, Groq, or OpenRouter chat completion endpoint."""
+def call_openai_compatible_api(endpoint, api_key, model, user_message, history=None, persona="standard"):
+    """Call OpenAI, Groq, or OpenRouter chat completion endpoint with persona prompt."""
     import requests
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    persona_prompt = SYSTEM_PROMPT
+    if persona == "coder":
+        persona_prompt += (
+            "\n\nSPECIAL INSTRUCTION (Coding Specialist Persona): "
+            "You are acting as an expert Software Engineer and Coding Mentor. "
+            "Provide clean, well-commented, robust code in standard markdown code blocks. "
+            "Include Big-O time and space complexity analysis, explain edge cases, and describe how the code works."
+        )
+    elif persona == "academic":
+        persona_prompt += (
+            "\n\nSPECIAL INSTRUCTION (Academic & Viva Prep Persona): "
+            "You are acting as a Computer Science Professor and Viva Examiner. "
+            "Provide rigorous, academic-level explanations with formal definitions, core architectural principles, "
+            "step-by-step mathematical or algorithmic breakdowns, and highlight likely viva/exam questions on this topic."
+        )
+    elif persona == "concise":
+        persona_prompt += (
+            "\n\nSPECIAL INSTRUCTION (Quick & Concise Persona): "
+            "You are acting as a Quick & Concise Assistant. "
+            "Provide succinct, high-yield bulleted points with zero filler or introductory preamble."
+        )
+
+    messages = [{"role": "system", "content": persona_prompt}]
 
     if history and isinstance(history, list):
         for msg in history[-8:]:
@@ -304,42 +331,56 @@ def offline_educational_engine(user_message):
             "- **Student Learning Management & Collaboration Portal**: Real-time study rooms, code snippets, notes, and task tracker (Flask/React).\n"
             "- **Campus Lost & Found Platform**: Image verification, geolocation tagging, and automated notification alerts.\n\n"
             "#### 3. Cybersecurity & Systems:\n"
-            "- **Network Intrusion Detection System (NIDS)**: Packet sniffer with anomaly-based detection using Python Scapy and Random Forest.\n"
-            "- **Secure Decentralized Credential Verifier**: Tamper-proof certificate issuing and cryptographic verification.\n\n"
-            "Which area interests you the most? I can provide the full tech stack, database schema, and architecture!"
+            "# Function demonstrating clean Pythonic data processing\n"
+            "def filter_even_squares(numbers: list[int]) -> list[int]:\n"
+            "    \"\"\"Return squares of even numbers in a list.\"\"\"\n"
+            "    return [n ** 2 for n in numbers if n % 2 == 0]\n\n"
+            "data = [1, 2, 3, 4, 5, 6, 7, 8]\n"
+            "print(filter_even_squares(data))  # Output: [4, 16, 36, 64]\n"
+            "```\n\n"
+            "**Need help with a specific concept?** Feel free to ask about Object-Oriented Programming (OOP), Data Science, or Web Development!"
         )
 
-    elif "hello" in msg or "hi" in msg or "hey" in msg:
+    elif any(q in msg_lower for q in ["machine learning", "ml", "ai", "neural", "deep learning", "nlp", "model"]):
+        return tip + (
+            "### Machine Learning (ML) & AI Fundamentals\n\n"
+            "**Machine Learning** is a branch of Artificial Intelligence that enables computer systems to learn patterns directly from data rather than following explicitly hardcoded rules.\n\n"
+            "#### Primary Machine Learning Paradigms:\n"
+            "1. **Supervised Learning**: Model learns on labeled input-output pairs (e.g., Linear Regression, Decision Trees, Support Vector Machines).\n"
+            "2. **Unsupervised Learning**: Uncovers hidden structure in unlabeled datasets (e.g., K-Means Clustering, PCA).\n"
+            "3. **Reinforcement Learning**: Agent learns optimal decision-making strategies through reward signals in dynamic environments.\n\n"
+            "#### Standard ML Pipeline:\n"
+            "```text\n"
+            "Data Collection ──> Preprocessing & TF-IDF Vectorization ──> Model Training ──> Evaluation (F1, Accuracy) ──> Deployment\n"
+            "```\n\n"
+            "*Ask me any follow-up question on algorithms, loss functions, or training pipelines!*"
+        )
+
+    elif any(q in msg_lower for q in ["hi", "hello", "hey", "who are you", "what can you do"]):
         return (
-            "### Hello! Welcome to SmartChat AI\n\n"
-            "I am your intelligent AI assistant, ready to assist you with:\n\n"
-            "- **Programming & Debugging**: Python, Java, C++, JavaScript, SQL, HTML/CSS.\n"
-            "- **Computer Science & Engineering**: DBMS, Data Structures, Algorithms, OS, Networks, AI/ML.\n"
-            "- **Project Development**: System architecture, API design, idea brainstorming.\n"
-            "- **General Knowledge & Learning**: Math, science, clear technical breakdowns.\n\n"
-            "How can I help you today? Feel free to ask any question or try one of the prompt suggestions!"
+            "### Hello! I'm SmartChat AI 👋\n\n"
+            "I'm an intelligent, full-stack AI assistant powered by **Groq Llama 3.3 70B** and local on-device NLP processing.\n\n"
+            "#### What I can help you with:\n"
+            "- **Coding & Engineering**: Python, JavaScript, C++, SQL, Algorithms, Debugging & Code reviews.\n"
+            "- **Academic & Viva Prep**: Detailed breakdowns of concepts, CS curricula, and exam questions.\n"
+            "- **Idea Generation & Writing**: Creative brainstorming, project architectures, and learning roadmaps.\n"
+            "- **Voice Mode**: Speak into your microphone and hear responses read aloud in real-time.\n\n"
+            "How can I help you today? Try one of the quick suggestions or type any question below!"
         )
 
     else:
-        # General response
         return tip + (
             f"### SmartChat AI Response\n\n"
-            f"Thank you for asking about: **{user_message}**.\n\n"
-            f"Here is a structured overview:\n\n"
-            f"1. **Core Concept**: Analyzing the key elements of your question.\n"
-            f"2. **Detailed Solution**: When connected to the live AI API, SmartChat AI generates full real-time answers with code examples and customized answers.\n\n"
-            f"To enable live, unlimited real-time generation powered by Google Gemini, simply add your API key to `.env`:\n\n"
-            f"```bash\n"
-            f"# In your .env file:\n"
-            f"GEMINI_API_KEY=AIzaSy...\n"
-            f"```\n\n"
+            f"Thank you for your question regarding: **{user_message}**.\n\n"
+            f"1. **Core Concept**: Processing your query with the active AI model.\n"
+            f"2. **Real-Time Generation**: With Groq Llama 3.3 connected, SmartChat AI delivers instantaneous answers with complete code snippets, structured analysis, and actionable takeaways.\n\n"
             f"Feel free to ask questions about **Python, DBMS, Machine Learning, Data Structures, Web Development, or Project Ideas**!"
         )
 
 
-def generate_ai_response(user_message, history=None, requested_model=None):
+def generate_ai_response(user_message, history=None, requested_model=None, persona="standard"):
     """
-    Route message to requested AI provider, active cloud provider,
+    Route message to Groq Llama 3.3, active cloud provider,
     or the local NLP model engine.
     """
     active_provider, default_model = get_active_provider()
@@ -354,38 +395,50 @@ def generate_ai_response(user_message, history=None, requested_model=None):
 
     # Determine provider
     provider_to_use = None
-    if "gemini" in req_lower:
-        provider_to_use = "Gemini"
-    elif "groq" in req_lower:
+    if "groq" in req_lower:
         provider_to_use = "Groq"
+    elif "gemini" in req_lower:
+        provider_to_use = "Gemini"
     elif "openai" in req_lower:
         provider_to_use = "OpenAI"
     elif "openrouter" in req_lower:
         provider_to_use = "OpenRouter"
     else:
-        # Default to configured active provider
+        # Default to configured active provider (Groq)
         provider_to_use = active_provider
 
-    logger.info(f"Routing request to provider: {provider_to_use}")
+    logger.info(f"Routing request to provider: {provider_to_use} (Persona: {persona})")
 
-    if provider_to_use == "Gemini":
+    if provider_to_use == "Groq":
+        try:
+            groq_key = os.getenv("GROQ_API_KEY", GROQ_API_KEY).strip()
+            groq_model = os.getenv("GROQ_MODEL", GROQ_MODEL).strip()
+            return call_openai_compatible_api(
+                "https://api.groq.com/openai/v1/chat/completions",
+                groq_key,
+                groq_model,
+                user_message,
+                history,
+                persona
+            ), "Groq Llama 3.3 (Cloud)"
+        except Exception as e:
+            logger.warning(f"Groq API call failed: {e}. Falling back to Local NLP engine.")
+            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
+
+    elif provider_to_use == "Gemini":
         try:
             return call_gemini_api(user_message, history), "Gemini (Cloud)"
         except Exception as e:
-            logger.warning(f"Gemini API call failed: {e}. Falling back to Local NLP engine.")
-            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
-
-    elif provider_to_use == "Groq":
-        try:
-            return call_openai_compatible_api(
-                "https://api.groq.com/openai/v1/chat/completions",
-                GROQ_API_KEY,
-                GROQ_MODEL,
-                user_message,
-                history
-            ), "Groq (Cloud)"
-        except Exception as e:
-            logger.warning(f"Groq API call failed: {e}. Falling back to Local NLP engine.")
+            logger.warning(f"Gemini API call failed: {e}. Falling back to Groq / Local NLP engine.")
+            if GROQ_API_KEY:
+                return call_openai_compatible_api(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    GROQ_API_KEY,
+                    GROQ_MODEL,
+                    user_message,
+                    history,
+                    persona
+                ), "Groq Llama 3.3 (Cloud)"
             return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
 
     elif provider_to_use == "OpenAI":
@@ -395,7 +448,8 @@ def generate_ai_response(user_message, history=None, requested_model=None):
                 OPENAI_API_KEY,
                 OPENAI_MODEL,
                 user_message,
-                history
+                history,
+                persona
             ), "OpenAI (Cloud)"
         except Exception as e:
             logger.warning(f"OpenAI API call failed: {e}. Falling back to Local NLP engine.")
@@ -408,7 +462,8 @@ def generate_ai_response(user_message, history=None, requested_model=None):
                 OPENROUTER_API_KEY,
                 OPENROUTER_MODEL,
                 user_message,
-                history
+                history,
+                persona
             ), "OpenRouter (Cloud)"
         except Exception as e:
             logger.warning(f"OpenRouter API call failed: {e}. Falling back to Local NLP engine.")
@@ -439,7 +494,8 @@ def chat():
     {
         "message": "User question string",
         "history": [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}],
-        "model": "local-nlp" | "gemini" | "groq" | "openai"
+        "model": "groq" | "gemini" | "openai" | "local-nlp",
+        "persona": "standard" | "coder" | "academic" | "concise"
     }
     """
     if not request.is_json:
@@ -452,6 +508,7 @@ def chat():
     user_message = data.get("message", "").strip()
     history = data.get("history", [])
     requested_model = data.get("model", "")
+    persona = data.get("persona", "standard")
 
     if not user_message:
         return jsonify({
@@ -467,7 +524,7 @@ def chat():
 
     try:
         start_time = time.time()
-        reply, used_provider = generate_ai_response(user_message, history, requested_model)
+        reply, used_provider = generate_ai_response(user_message, history, requested_model, persona)
         elapsed = round(time.time() - start_time, 2)
 
         return jsonify({
@@ -516,6 +573,28 @@ def health():
 
 
 
+@app.route("/api/feedback", methods=["POST"])
+def submit_feedback():
+    """Submit user feedback / rating for AI response improvement."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    prompt = data.get("prompt", "").strip()
+    response_text = data.get("response", "").strip()
+    rating = data.get("rating", "").strip() # 'helpful', 'unhelpful', or 'regenerated'
+    user_id = session.get("user_id")
+
+    if not rating:
+        return jsonify({"status": "error", "error": "Rating is required."}), 400
+
+    database.save_response_feedback(user_id, prompt, response_text, rating)
+    return jsonify({
+        "status": "success",
+        "message": "Thank you! Your feedback helps improve SmartChat AI responses."
+    }), 200
+
+
 @app.route("/api/clear", methods=["POST"])
 def clear_session():
     """Endpoint for clearing conversation state confirmation."""
@@ -523,6 +602,196 @@ def clear_session():
         "status": "success",
         "message": "Chat session cleared successfully."
     }), 200
+
+
+# ==========================================
+# Authentication & User Management Routes
+# ==========================================
+
+@app.route("/api/auth/register", methods=["POST"])
+def register():
+    """Register a new user with email and password."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    name = data.get("name", "").strip()
+    email = data.get("email", "").strip()
+    password = data.get("password", "").strip()
+
+    if not name:
+        return jsonify({"status": "error", "error": "Please enter your full name."}), 400
+    if not email or "@" not in email:
+        return jsonify({"status": "error", "error": "Please enter a valid email address."}), 400
+    if not password or len(password) < 6:
+        return jsonify({"status": "error", "error": "Password must be at least 6 characters long."}), 400
+
+    try:
+        user = database.create_user(name=name, email=email, password=password, provider="email")
+        session["user_id"] = user["id"]
+        return jsonify({
+            "status": "success",
+            "message": "Account created successfully.",
+            "user": user
+        }), 201
+    except ValueError as e:
+        return jsonify({"status": "error", "error": str(e)}), 400
+    except Exception as e:
+        logger.error(f"Error in /api/auth/register: {e}")
+        return jsonify({"status": "error", "error": "Failed to create account. Please try again."}), 500
+
+
+@app.route("/api/auth/login", methods=["POST"])
+def login():
+    """Sign in an existing user with email and password."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    email = data.get("email", "").strip()
+    password = data.get("password", "").strip()
+
+    if not email or not password:
+        return jsonify({"status": "error", "error": "Please enter both email and password."}), 400
+
+    user, error = database.verify_user_login(email, password)
+    if error:
+        return jsonify({"status": "error", "error": error}), 401
+
+    session["user_id"] = user["id"]
+    return jsonify({
+        "status": "success",
+        "message": f"Welcome back, {user['name']}!",
+        "user": user
+    }), 200
+
+
+@app.route("/api/auth/google", methods=["POST"])
+def google_auth():
+    """Sign in or register with Google credentials."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    email = data.get("email", "").strip()
+    name = data.get("name", "").strip()
+    avatar_url = data.get("avatar_url", "").strip()
+
+    if not email or "@" not in email:
+        return jsonify({"status": "error", "error": "Valid Google email is required."}), 400
+
+    try:
+        user = database.handle_google_user(email=email, name=name or "Google User", avatar_url=avatar_url)
+        session["user_id"] = user["id"]
+        return jsonify({
+            "status": "success",
+            "message": f"Signed in as {user['name']}",
+            "user": user
+        }), 200
+    except Exception as e:
+        logger.error(f"Error in /api/auth/google: {e}")
+        return jsonify({"status": "error", "error": "Google sign-in failed. Please try again."}), 500
+
+
+@app.route("/api/auth/forgot-password", methods=["POST"])
+def forgot_password():
+    """Request a password reset code for an email."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    email = data.get("email", "").strip()
+
+    if not email or "@" not in email:
+        return jsonify({"status": "error", "error": "Please enter a valid email address."}), 400
+
+    code, error = database.create_password_reset_code(email)
+    if error:
+        return jsonify({"status": "error", "error": error}), 404
+
+    # In production this would send an email. For local/demo viva purposes, we return the reset code so testing is instant!
+    logger.info(f"Password reset code for {email}: {code}")
+    return jsonify({
+        "status": "success",
+        "message": f"Password reset verification code generated for {email}.",
+        "reset_code": code,
+        "expires_in_minutes": 15
+    }), 200
+
+
+@app.route("/api/auth/reset-password", methods=["POST"])
+def reset_password():
+    """Reset password using 6-digit verification code."""
+    if not request.is_json:
+        return jsonify({"status": "error", "error": "JSON payload expected."}), 400
+
+    data = request.get_json()
+    email = data.get("email", "").strip()
+    code = data.get("code", "").strip()
+    new_password = data.get("new_password", "").strip()
+
+    if not email or not code or not new_password:
+        return jsonify({"status": "error", "error": "Email, verification code, and new password are required."}), 400
+
+    if len(new_password) < 6:
+        return jsonify({"status": "error", "error": "New password must be at least 6 characters long."}), 400
+
+    success, error = database.reset_user_password(email, code, new_password)
+    if not success:
+        return jsonify({"status": "error", "error": error}), 400
+
+    return jsonify({
+        "status": "success",
+        "message": "Password has been successfully reset! You can now log in with your new password."
+    }), 200
+
+
+@app.route("/api/auth/me", methods=["GET"])
+def current_user():
+    """Get profile of currently logged-in user."""
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"status": "success", "authenticated": False, "user": None}), 200
+
+    user = database.get_user_by_id(user_id)
+    if not user:
+        session.pop("user_id", None)
+        return jsonify({"status": "success", "authenticated": False, "user": None}), 200
+
+    return jsonify({
+        "status": "success",
+        "authenticated": True,
+        "user": user
+    }), 200
+
+
+@app.route("/api/auth/logout", methods=["POST"])
+def logout():
+    """Sign out current user and clear session."""
+    session.pop("user_id", None)
+    return jsonify({
+        "status": "success",
+        "message": "Logged out successfully."
+    }), 200
+
+
+@app.route("/api/auth/sync-history", methods=["GET", "POST"])
+def sync_history():
+    """Sync user chat sessions with cloud database."""
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"status": "error", "error": "Authentication required."}), 401
+
+    if request.method == "POST":
+        data = request.get_json() or {}
+        sessions_json = json.dumps(data.get("sessions", []))
+        database.save_user_sessions(user_id, sessions_json)
+        return jsonify({"status": "success", "message": "History synced successfully."}), 200
+    else:
+        history_str = database.get_user_sessions(user_id)
+        sessions_data = json.loads(history_str) if history_str else []
+        return jsonify({"status": "success", "sessions": sessions_data}), 200
+
 
 
 # Error Handlers
