@@ -226,13 +226,6 @@
   // Initialization
   // -------------------------------------------------------------------------
   function init() {
-    if (elements.sidebar) {
-      elements.sidebar.classList.remove('collapsed', 'open');
-      elements.sidebar.style.display = 'flex';
-      elements.sidebar.style.visibility = 'visible';
-      elements.sidebar.style.opacity = '1';
-      elements.sidebar.style.transform = 'none';
-    }
     initTheme();
     initModelSelection();
     initVoiceAssistantSettings();
@@ -389,6 +382,7 @@
     saveSessionsToStorage();
     renderHistorySidebar();
     renderCurrentSession();
+    closeSidebarOnMobile();
 
     if (elements.messageInput) {
       elements.messageInput.value = '';
@@ -411,6 +405,7 @@
     saveSessionsToStorage();
     renderHistorySidebar();
     renderCurrentSession();
+    closeSidebarOnMobile();
   }
 
   function deleteSession(sessionId, event) {
@@ -2447,14 +2442,25 @@
   }
 
   function toggleSidebar() {
-    if (elements.sidebar) {
-      elements.sidebar.style.display = 'flex';
-      elements.sidebar.style.visibility = 'visible';
-      if (elements.historyList) {
-        elements.historyList.scrollIntoView({ behavior: 'smooth' });
+    if (window.innerWidth <= 768) {
+      if (elements.sidebar && elements.sidebar.classList.contains('open')) {
+        closeSidebarOnMobile();
+      } else {
+        openSidebarOnMobile();
+      }
+    } else {
+      if (elements.sidebar) {
+        elements.sidebar.classList.toggle('collapsed');
       }
     }
   }
+
+  // Handle window resizing cleanly
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      closeSidebarOnMobile();
+    }
+  });
 
   // Run initial setup when DOM is ready
   if (document.readyState === 'loading') {

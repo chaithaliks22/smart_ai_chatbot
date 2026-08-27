@@ -82,28 +82,93 @@ def extract_core_entity(raw_text):
     """Extract primary subject topic from conversational or compound queries."""
     q = raw_text.strip().rstrip("?!.,")
 
-    # If query contains 'about X', 'review of X', 'overview on X'
-    m = re.search(r"\b(?:about|of|on|review|for)\s+([a-zA-Z0-9\s_-]+)$", q, flags=re.IGNORECASE)
+    # If query contains 'about X', 'review of X', 'overview on X', 'who is X', etc.
+    m = re.search(r"\b(?:about|of|on|review|for|regarding)\s+([a-zA-Z0-9\s_-]+)$", q, flags=re.IGNORECASE)
     if m:
         extracted = m.group(1).strip()
-        extracted = re.sub(r"\s+(review|overview|details|summary)$", "", extracted, flags=re.IGNORECASE).strip()
+        extracted = re.sub(r"\s+(review|overview|details|summary|explained|synopsis)$", "", extracted, flags=re.IGNORECASE).strip()
         if len(extracted) >= 2:
             q = extracted
 
     # Strip standard conversational prefixes
-    clean_p = r"^(configure\s+it\s+and\s+|give\s+(me\s+)?(a\s+)?(review|overview|details|summary|information)\s+(and\s+overview\s+)?(of|about|on)|review\s+(about|of|on)|overview\s+of|details\s+of|say\s+me\s+about|tell\s+me\s+about|can\s+you\s+tell\s+me\s+about|what\s+is\s+your\s+review\s+of|what\s+about|who\s+is|what\s+is|who\s+was|what\s+was|explain|describe)\s+"
+    clean_p = r"^(can\s+you\s+)?(please\s+)?(configure\s+it\s+and\s+|give\s+(me\s+)?(a\s+)?(review|overview|details|summary|information|breakdown)\s+(and\s+overview\s+)?(of|about|on)|review\s+(about|of|on)|overview\s+of|details\s+of|say\s+me\s+about|tell\s+me\s+about|can\s+you\s+tell\s+me\s+about|what\s+is\s+your\s+review\s+of|what\s+about|who\s+is|what\s+is|who\s+was|what\s+was|who\s+are|what\s+are|explain\s+to\s+me|explain|describe|define)\s+"
     q = re.sub(clean_p, "", q, flags=re.IGNORECASE).strip().rstrip("?!.")
 
-    # Apply fuzzy word corrections (e.g. tixic -> toxic)
+    # Apply selective typo correction only for exact misspelled keywords without corrupting common English words
+    common_words = {"starring", "directed", "upcoming", "latest", "movie", "film", "sports", "cricket", "football", "player", "captain", "explain", "about", "world", "rules"}
     words = q.lower().split()
     corrected = []
     for w in words:
-        if len(w) >= 3 and w not in STOP_WORDS:
-            matches = difflib.get_close_matches(w, KNOWN_ENTITIES, n=1, cutoff=0.70)
+        if len(w) >= 4 and w not in STOP_WORDS and w not in common_words:
+            matches = difflib.get_close_matches(w, KNOWN_ENTITIES, n=1, cutoff=0.82)
             corrected.append(matches[0] if matches else w)
         else:
             corrected.append(w)
     return " ".join(corrected)
+
+
+def get_live_grounding_context(query):
+    """
+    Retrieve concise factual grounding context from DuckDuckGo Instant Answer
+    or Wikipedia API for grounding LLM prompts in real-time facts.
+    """
+    raw = query.strip()
+    if not raw or len(raw) < 3:
+        return None
+
+    raw_lower = raw.lower()
+    if any(raw_lower.startswith(g) for g in ["hi", "hello", "hey", "write code", "write a python", "debug", "solve this", "help me"]):
+        return None
+
+    clean_raw = re.sub(r"^(can\s+you\s+)?(please\s+)?(tell\s+me\s+about|what\s+is|who\s+is|what\s+about|give\s+me\s+details\s+on|explain|describe)\s+", "", raw, flags=re.IGNORECASE).strip().rstrip("?!.")
+    core_q = extract_core_entity(raw)
+
+    search_candidates = []
+    if clean_raw and len(clean_raw) >= 3:
+        search_candidates.append(clean_raw)
+    if core_q and core_q not in search_candidates and len(core_q) >= 2:
+        search_candidates.append(core_q)
+
+    headers = {
+        "User-Agent": "SmartChatAI-Grounding/3.0 (https://smartchat.local; contact@smartchat.edu)"
+    }
+
+    # 1. Check DuckDuckGo Instant Answer API
+    for term in search_candidates:
+        try:
+            ddg_url = f"https://api.duckduckgo.com/?q={urllib.parse.quote(term)}&format=json&no_html=1&skip_disambig=1"
+            resp = requests.get(ddg_url, headers=headers, timeout=2.5)
+            if resp.status_code == 200:
+                data = resp.json()
+                abstract = data.get("AbstractText", "").strip()
+                heading = data.get("Heading", "")
+                if abstract and len(abstract) > 30:
+                    return f"[Verified Real-Time Knowledge for '{heading or term}']:\n{abstract}"
+        except Exception:
+            pass
+
+    # 2. Check Wikipedia Search API
+    for term in search_candidates:
+        try:
+            search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(term)}&utf8=&format=json"
+            s_resp = requests.get(search_url, headers=headers, timeout=2.5)
+            if s_resp.status_code == 200:
+                results = s_resp.json().get("query", {}).get("search", [])
+                if results:
+                    title = results[0]["title"]
+                    sum_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(title.replace(' ', '_'))}"
+                    sum_resp = requests.get(sum_url, headers=headers, timeout=2.5)
+                    if sum_resp.status_code == 200:
+                        page_data = sum_resp.json()
+                        extract = page_data.get("extract", "").strip()
+                        if extract and len(extract) > 40 and page_data.get("type") != "disambiguation":
+                            desc = page_data.get("description", "")
+                            return f"[Verified Real-Time Knowledge for '{title}' ({desc})]:\n{extract}"
+        except Exception:
+            pass
+
+    return None
+
 
 
 def fetch_live_knowledge_summary(query):
@@ -127,10 +192,28 @@ def fetch_live_knowledge_summary(query):
     is_sports_query = any(w in raw.lower() for w in ["cricket", "football", "soccer", "batsman", "bowler", "player", "captain", "match", "world cup"])
     is_review_request = any(w in raw.lower() for w in ["review", "overview", "rating", "opinion", "critique", "analysis", "details"])
 
-    # Build intelligent search candidate variants
-    variants = [core_q]
+    # 1. First check DuckDuckGo Instant Knowledge
+    try:
+        ddg_url = f"https://api.duckduckgo.com/?q={urllib.parse.quote(core_q)}&format=json&no_html=1&skip_disambig=1"
+        resp = requests.get(ddg_url, headers=headers, timeout=3.0)
+        if resp.status_code == 200:
+            data = resp.json()
+            abstract = data.get("AbstractText", "").strip()
+            heading = data.get("Heading", core_q.title())
+            source_url = data.get("AbstractURL", "")
+            if abstract and len(abstract) > 50:
+                md_resp = f"### {heading}\n\n"
+                md_resp += f"{abstract}\n\n"
+                md_resp += f"#### Key Highlights:\n"
+                md_resp += f"- **Knowledge Category**: Verified Encyclopedia Fact\n"
+                if source_url:
+                    md_resp += f"- **Primary Source Reference**: [{heading} Details]({source_url})\n"
+                return md_resp
+    except Exception:
+        pass
 
-    # Try query without modifier prefixes (latest, new, upcoming)
+    # 2. Wikipedia Search and Summary
+    variants = [core_q]
     stripped = re.sub(r"^(latest|new|upcoming|recent|old|largest)\s+", "", core_q, flags=re.IGNORECASE).strip()
     if stripped and stripped not in variants:
         variants.append(stripped)
@@ -199,7 +282,6 @@ def fetch_live_knowledge_summary(query):
                     res_title = page_data.get("title", title)
                     desc = page_data.get("description", "")
                     page_url = page_data.get("content_urls", {}).get("desktop", {}).get("page", "")
-
                     extract_clean = extract.strip()
 
                     if is_review_request and is_movie_query:
@@ -209,10 +291,10 @@ def fetch_live_knowledge_summary(query):
                         md_response += f"#### 1. Film Synopsis & Background:\n{extract_clean}\n\n"
                         md_response += f"#### 2. Key Creative Highlights & Buzz:\n"
                         md_response += f"- **Production Status**: Major high-profile pan-India & global production\n"
-                        md_response += f"- **Genre & Vision**: Stylized dark narrative with world-class technical crew\n"
-                        md_response += f"- **Industry Expectations**: Highly anticipated project with immense commercial and critical buzz\n\n"
+                        md_response += f"- **Genre & Vision**: Stylized cinematic narrative with world-class technical crew\n"
+                        md_response += f"- **Industry Expectations**: Highly anticipated project with immense commercial and critical interest\n\n"
                         if page_url:
-                            md_response += f"#### 3. Verified Source Reference:\n- [Read full article & film details on Wikipedia]({page_url})\n"
+                            md_response += f"#### 3. Verified Source Reference:\n- [Read full article on Wikipedia]({page_url})\n"
                         return md_response
                     else:
                         md_response = f"### {res_title}"

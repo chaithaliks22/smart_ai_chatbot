@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="SmartChat AI — Your intelligent AI assistant for learning, coding, ideas, problem solving, and everyday questions." />
   <meta name="theme-color" content="#0F172A" />
   <title>SmartChat AI — Intelligent AI Assistant</title>
@@ -125,19 +125,28 @@
       <!-- Top Navigation Bar -->
       <header class="app-header">
         <div class="header-left">
+          <!-- Mobile Sidebar Toggle Button -->
+          <button class="icon-btn mobile-menu-btn" id="openSidebarBtn" title="Open navigation sidebar" aria-label="Open navigation sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
           <h1 class="header-title">SmartChat AI</h1>
           <div class="model-selector-wrap">
             <select id="modelSelector" class="model-select-dropdown" title="Select AI Model / Pipeline">
-              <option value="Groq" selected>🚀 Groq Llama 3.3 70B (Active)</option>
+              <option value="Groq" selected>🚀 Groq (Fast Cloud)</option>
               <option value="SmartChat-NLP">🧠 Local NLP Engine</option>
-              <option value="Gemini">⚡ Google Gemini 2.5</option>
-              <option value="OpenAI">🌐 OpenAI GPT-4o-mini</option>
+              <option value="Gemini">⚡ Gemini 2.5</option>
+              <option value="OpenAI">🌐 GPT-4o-mini</option>
             </select>
             <select id="personaSelector" class="model-select-dropdown persona-dropdown" title="Select AI Response Persona / Tone">
               <option value="standard" selected>🎯 Standard AI</option>
               <option value="coder">💻 Code Specialist</option>
-              <option value="academic">📚 Academic & Viva Prep</option>
-              <option value="concise">⚡ Quick & Concise</option>
+              <option value="academic">📚 Academic Prep</option>
+              <option value="concise">⚡ Quick &amp; Concise</option>
             </select>
           </div>
         </div>
@@ -213,10 +222,10 @@
 
           <!-- Live Feature Highlight Pills -->
           <div class="hero-feature-pills">
-            <span class="hero-pill">⚡ Groq Llama 3.3 70B Active</span>
+            <span class="hero-pill">⚡ Groq GPT-OSS-120B Active</span>
+            <span class="hero-pill">🧠 Dual-Engine Precision Grounding</span>
             <span class="hero-pill">🎙️ Voice Assistant (STT &amp; TTS)</span>
             <span class="hero-pill">🎨 6 Custom Themes</span>
-            <span class="hero-pill">🔐 Cloud History &amp; Auth</span>
           </div>
 
           <!-- Suggestion Cards Grid -->

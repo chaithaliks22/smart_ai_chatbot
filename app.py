@@ -5,9 +5,11 @@ Backend Server (Flask)
 
 import os
 import sys
+import re
 import json
 import time
 import logging
+import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, session
@@ -44,23 +46,29 @@ app = Flask(
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "smartchat-ai-college-project-2026")
 app.config["JSON_AS_ASCII"] = False
 
-# System Prompt for SmartChat AI
-SYSTEM_PROMPT = """You are SmartChat AI, a highly capable, intelligent, and friendly AI assistant designed for learning, problem-solving, coding, engineering, and everyday questions across any field (Film, Sports, Education, Science, History, Technology, etc.).
+# System Prompt for SmartChat AI with Precision Guidelines
+SYSTEM_PROMPT = r"""You are SmartChat AI, an elite, highly intelligent, and accurate AI assistant engineered for deep learning, problem-solving, engineering, mathematics, computer science, medicine, science, humanities, cinema, sports, and general knowledge.
 
-Core Guidelines:
-1. Accuracy & Reliability: Provide factual, precise, and well-reasoned answers. Distinguish facts from opinions. If you do not know an answer or lack verified information, explicitly state uncertainty rather than hallucinating.
-2. Multi-Domain & Educational Focus: For cinema, sports, education, science, mathematics, literature, and technology, explain concepts clearly with intuitive explanations and structured frameworks.
-3. Code & Programming:
-   - Provide clean, robust, and commented code examples.
-   - Always wrap code in standard Markdown code blocks with appropriate language identifiers (e.g., ```python, ```javascript, ```java, ```cpp, ```html, ```sql).
-   - Explain why the code works and highlight edge cases or performance considerations.
-4. Formatting & Readability:
-   - Structure responses logically using Markdown headers (###), bold text, bullet lists, and numbered steps.
-   - Keep answers concise for simple questions, and thorough/structured for complex problems.
-5. Tone: Professional, encouraging, respectful, and articulate.
+Core Directives:
+1. Supreme Accuracy & Factual Reliability:
+   - Provide precise, verifiable, and logically sound answers.
+   - Never hallucinate facts, dates, names, or code functions.
+   - If grounding knowledge is provided in the prompt, treat it as ground truth.
+2. Structure & Clarity:
+   - Begin with a crisp definition / direct answer.
+   - Organize complex topics into structured sections with clear Markdown headings (`###`, `####`), bold keywords, and bullet points.
+   - Include comparison tables or summary matrices where applicable.
+3. Code & Technical Precision:
+   - Provide complete, production-ready, clean, and well-commented code snippets.
+   - Always wrap code in appropriate Markdown fenced blocks (e.g. ```python, ```javascript, ```cpp, ```java, ```html, ```sql).
+   - Detail Big-O time and space complexity ($\mathcal{O}(n)$, $\mathcal{O}(\log n)$) and explain edge cases.
+4. Mathematics & Formulas:
+   - Express mathematical equations cleanly using LaTeX syntax (e.g., $E = mc^2$, $\sum_{i=1}^n x_i$).
+   - Show step-by-step analytical derivations and intermediate steps.
+5. Tone: Articulate, respectful, authoritative, and empowering.
 """
 
-from nlp_model import SmartChatNLPModel
+from nlp_model import SmartChatNLPModel, get_live_grounding_context, fetch_live_knowledge_summary
 
 # Initialize Local NLP Model with absolute paths
 nlp_engine = SmartChatNLPModel(
@@ -68,12 +76,19 @@ nlp_engine = SmartChatNLPModel(
     model_cache_path=os.path.join(BASE_DIR, "smartchat_model.pkl")
 )
 
-# Supported API Providers
+# Supported API Providers & Verified Active Models
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+GROQ_FALLBACK_MODELS = [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "groq/compound",
+    "qwen/qwen3.6-27b",
+    "groq/compound-mini"
+]
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip()
@@ -82,8 +97,17 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free").strip()
 
 
+def clean_llm_response(text):
+    """Clean internal reasoning tags like <think>...</think> and excessive whitespace."""
+    if not text:
+        return ""
+    # Strip thinking tags if present
+    cleaned = re.sub(r"<think>[\s\S]*?</think>", "", text).strip()
+    return cleaned if cleaned else text.strip()
+
+
 def get_active_provider():
-    """Detect which AI API provider is configured, prioritizing Groq Llama 3.3."""
+    """Detect which AI API provider is configured, prioritizing high-speed Groq."""
     groq_key = os.getenv("GROQ_API_KEY", GROQ_API_KEY).strip()
     if groq_key and not groq_key.startswith("your_"):
         return "Groq", os.getenv("GROQ_MODEL", GROQ_MODEL).strip()
@@ -105,21 +129,24 @@ def call_gemini_api(user_message, history=None):
     from google import genai
     from google.genai import types
 
-    # Reload key and model from .env if needed
     current_key = os.getenv("GEMINI_API_KEY", GEMINI_API_KEY).strip()
-    current_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash").strip()
+    current_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
 
     if not current_key or current_key.startswith("your_"):
         raise Exception("GEMINI_API_KEY is not configured in .env")
 
     client = genai.Client(api_key=current_key)
 
-    # Models to try in order
-    models_to_try = [current_model, "gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-2.5-pro", "gemini-pro-latest"]
+    models_to_try = [current_model, "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
     seen = set()
     models_to_try = [m for m in models_to_try if m and not (m in seen or seen.add(m))]
 
-    # Build prompt/history contents
+    # Fetch live grounding context if applicable
+    grounding_info = get_live_grounding_context(user_message)
+    sys_instruction = SYSTEM_PROMPT
+    if grounding_info:
+        sys_instruction += f"\n\nREAL-TIME VERIFIED FACTUAL CONTEXT:\n{grounding_info}"
+
     contents = []
     if history and isinstance(history, list):
         for msg in history[-8:]:
@@ -131,7 +158,7 @@ def call_gemini_api(user_message, history=None):
     contents.append(types.Content(role="user", parts=[types.Part.from_text(text=user_message)]))
 
     config = types.GenerateContentConfig(
-        system_instruction=SYSTEM_PROMPT,
+        system_instruction=sys_instruction,
         temperature=0.7,
         max_output_tokens=2048,
         top_p=0.95
@@ -147,7 +174,7 @@ def call_gemini_api(user_message, history=None):
                 config=config
             )
             if resp and resp.text:
-                return resp.text
+                return clean_llm_response(resp.text)
         except Exception as e:
             err_str = str(e)
             logger.warning(f"Gemini model {model_name} failed: {err_str[:150]}")
@@ -157,7 +184,7 @@ def call_gemini_api(user_message, history=None):
 
 
 def call_openai_compatible_api(endpoint, api_key, model, user_message, history=None, persona="standard"):
-    """Call OpenAI, Groq, or OpenRouter chat completion endpoint with persona prompt."""
+    """Call OpenAI, Groq, or OpenRouter chat completion endpoint with persona prompt and model pool fallback."""
     import requests
 
     persona_prompt = SYSTEM_PROMPT
@@ -182,6 +209,11 @@ def call_openai_compatible_api(endpoint, api_key, model, user_message, history=N
             "Provide succinct, high-yield bulleted points with zero filler or introductory preamble."
         )
 
+    # Attach verified real-time knowledge grounding if relevant
+    grounding_info = get_live_grounding_context(user_message)
+    if grounding_info:
+        persona_prompt += f"\n\n[VERIFIED REAL-TIME FACTUAL CONTEXT (Use this to provide 100% accurate, up-to-date answers)]:\n{grounding_info}"
+
     messages = [{"role": "system", "content": persona_prompt}]
 
     if history and isinstance(history, list):
@@ -193,40 +225,70 @@ def call_openai_compatible_api(endpoint, api_key, model, user_message, history=N
 
     messages.append({"role": "user", "content": user_message})
 
-    payload = {
-        "model": model,
-        "messages": messages,
-        "temperature": 0.7,
-        "max_tokens": 2048
-    }
+    # Prepare model candidate pool
+    models_to_try = [model]
+    if "groq.com" in endpoint:
+        for fallback in GROQ_FALLBACK_MODELS:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
+    elif "openrouter.ai" in endpoint:
+        fallbacks = ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-2.0-flash-exp:free", "qwen/qwen-2.5-72b-instruct"]
+        for fallback in fallbacks:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
 
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
 
-    try:
-        resp = requests.post(endpoint, json=payload, headers=headers, timeout=25)
-        if resp.status_code == 200:
-            data = resp.json()
-            choices = data.get("choices", [])
-            if choices:
-                return choices[0].get("message", {}).get("content", "")
-            return "No response generated. Please try again."
-        elif resp.status_code == 429:
-            return "Rate limit reached. Please wait a moment and try again."
-        else:
-            err_msg = resp.text
-            try:
-                err_msg = resp.json().get("error", {}).get("message", resp.text)
-            except Exception:
-                pass
-            logger.error(f"API Error ({resp.status_code}): {err_msg}")
-            raise Exception(f"API Error {resp.status_code}: {err_msg}")
-    except requests.exceptions.Timeout:
-        raise Exception("Request timed out while waiting for AI response.")
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Network communication error: {e}")
+    last_error = None
+    for candidate_model in models_to_try:
+        payload = {
+            "model": candidate_model,
+            "messages": messages,
+            "temperature": 0.7,
+            "max_tokens": 2048
+        }
+        try:
+            logger.info(f"Dispatching completion to {endpoint} with model {candidate_model}")
+            resp = requests.post(endpoint, json=payload, headers=headers, timeout=25)
+            if resp.status_code == 200:
+                data = resp.json()
+                choices = data.get("choices", [])
+                if choices:
+                    raw_content = choices[0].get("message", {}).get("content", "")
+                    cleaned_content = clean_llm_response(raw_content)
+                    if cleaned_content:
+                        return cleaned_content
+                return "No response generated. Please try again."
+            elif resp.status_code == 429:
+                logger.warning(f"Model {candidate_model} hit rate limit 429, trying next model...")
+                last_error = Exception("Rate limit reached on model")
+                continue
+            elif resp.status_code == 404:
+                logger.warning(f"Model {candidate_model} not found 404, trying next model in pool...")
+                last_error = Exception(f"Model {candidate_model} not found")
+                continue
+            else:
+                err_msg = resp.text
+                try:
+                    err_msg = resp.json().get("error", {}).get("message", resp.text)
+                except Exception:
+                    pass
+                logger.error(f"API Error on model {candidate_model} ({resp.status_code}): {err_msg}")
+                last_error = Exception(f"API Error {resp.status_code}: {err_msg}")
+                continue
+        except requests.exceptions.Timeout:
+            last_error = Exception(f"Request timed out on model {candidate_model}")
+            continue
+        except requests.exceptions.RequestException as e:
+            last_error = Exception(f"Network error on model {candidate_model}: {e}")
+            continue
+
+    if last_error:
+        raise last_error
+    raise Exception("Chat completion failed: No models in pool succeeded.")
 
 
 def offline_educational_engine(user_message):
@@ -420,26 +482,36 @@ def generate_ai_response(user_message, history=None, requested_model=None, perso
                 user_message,
                 history,
                 persona
-            ), "Groq Llama 3.3 (Cloud)"
+            ), "Groq (GPT-OSS-120B / Cloud)"
         except Exception as e:
-            logger.warning(f"Groq API call failed: {e}. Falling back to Local NLP engine.")
-            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
+            logger.warning(f"Groq API call failed: {e}. Trying Gemini / Local Knowledge Engine...")
+            gemini_key = os.getenv("GEMINI_API_KEY", GEMINI_API_KEY).strip()
+            if gemini_key and not gemini_key.startswith("your_"):
+                try:
+                    return call_gemini_api(user_message, history), "Gemini (Fallback)"
+                except Exception:
+                    pass
+            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Knowledge Grounded)"
 
     elif provider_to_use == "Gemini":
         try:
             return call_gemini_api(user_message, history), "Gemini (Cloud)"
         except Exception as e:
             logger.warning(f"Gemini API call failed: {e}. Falling back to Groq / Local NLP engine.")
-            if GROQ_API_KEY:
-                return call_openai_compatible_api(
-                    "https://api.groq.com/openai/v1/chat/completions",
-                    GROQ_API_KEY,
-                    GROQ_MODEL,
-                    user_message,
-                    history,
-                    persona
-                ), "Groq Llama 3.3 (Cloud)"
-            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
+            groq_key = os.getenv("GROQ_API_KEY", GROQ_API_KEY).strip()
+            if groq_key and not groq_key.startswith("your_"):
+                try:
+                    return call_openai_compatible_api(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        groq_key,
+                        GROQ_MODEL,
+                        user_message,
+                        history,
+                        persona
+                    ), "Groq (GPT-OSS-120B / Fallback)"
+                except Exception:
+                    pass
+            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Knowledge Grounded)"
 
     elif provider_to_use == "OpenAI":
         try:
@@ -453,7 +525,7 @@ def generate_ai_response(user_message, history=None, requested_model=None, perso
             ), "OpenAI (Cloud)"
         except Exception as e:
             logger.warning(f"OpenAI API call failed: {e}. Falling back to Local NLP engine.")
-            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
+            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Knowledge Grounded)"
 
     elif provider_to_use == "OpenRouter":
         try:
@@ -467,11 +539,12 @@ def generate_ai_response(user_message, history=None, requested_model=None, perso
             ), "OpenRouter (Cloud)"
         except Exception as e:
             logger.warning(f"OpenRouter API call failed: {e}. Falling back to Local NLP engine.")
-            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Fallback)"
+            return nlp_engine.generate_response(user_message), "SmartChat-NLP (Knowledge Grounded)"
 
     else:
         # Standalone Local NLP Engine
         return nlp_engine.generate_response(user_message), "SmartChat-NLP (Local)"
+
 
 
 # ==========================================

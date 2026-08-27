@@ -301,6 +301,48 @@
       ]
     },
     {
+      "tag": "data_structures_core",
+      "patterns": [
+        "data structures", "explain data structures", "linked list vs array", "stack and queue",
+        "binary search tree bst", "hash tables and hash maps", "heap and priority queue",
+        "graph data structure", "tree traversal inorder preorder postorder"
+      ],
+      "responses": [
+        "### Core Data Structures & Applications\n\n#### 1. Linear Data Structures:\n- **Array**: Contiguous memory allocation. $\\mathcal{O}(1)$ random access by index, $\\mathcal{O}(n)$ insertion/deletion.\n- **Linked List**: Nodes containing data and pointers. Dynamic sizing, $\\mathcal{O}(1)$ insertion at head, $\\mathcal{O}(n)$ random access.\n- **Stack (LIFO - Last In, First Out)**: Push and Pop operations in $\\mathcal{O}(1)$. Applications: Function call stack, undo operations, parenthesis matching.\n- **Queue (FIFO - First In, First Out)**: Enqueue at rear, Dequeue at front in $\\mathcal{O}(1)$. Applications: CPU scheduling, BFS traversal, print queues.\n\n#### 2. Non-Linear Data Structures:\n- **Hash Table / Hash Map**: Key-value mapping via hash function. Average $\\mathcal{O}(1)$ search, insert, delete; worst case $\\mathcal{O}(n)$ with collisions (Chaining / Open Addressing).\n- **Binary Search Tree (BST)**: Left subtree $<$ Root $<$ Right subtree. Average search $\\mathcal{O}(\\log n)$, worst $\\mathcal{O}(n)$ (skewed). Self-balancing variants (AVL, Red-Black Trees) guarantee $\\mathcal{O}(\\log n)$.\n- **Heap (Priority Queue)**: Complete binary tree satisfying Min-Heap or Max-Heap property. $\\mathcal{O}(1)$ top retrieval, $\\mathcal{O}(\\log n)$ insert/extract.\n- **Graph ($G = (V, E)$)**: Vertices connected by edges. Represented via Adjacency Matrix ($\\mathcal{O}(V^2)$ space) or Adjacency List ($\\mathcal{O}(V+E)$ space)."
+      ]
+    },
+    {
+      "tag": "python_programming_fundamentals",
+      "patterns": [
+        "python programming", "explain python", "python oops concepts", "python decorators",
+        "python generators yield", "list comprehension python", "lambda functions python",
+        "python memory management gil", "python interview questions"
+      ],
+      "responses": [
+        "### Python Programming Mastery & Key Concepts\n\n#### 1. Object-Oriented Programming (OOP) in Python:\n```python\nclass BankAccount:\n    def __init__(self, owner: str, balance: float = 0.0):\n        self.owner = owner\n        self.__balance = balance  # Private attribute (Encapsulation)\n\n    def deposit(self, amount: float) -> float:\n        if amount > 0:\n            self.__balance += amount\n        return self.__balance\n\n    @property\n    def balance(self) -> float:\n        return self.__balance\n```\n\n#### 2. Decorators & Generators:\n- **Decorators**: Higher-order functions modifying the behavior of other functions.\n```python\ndef timer_decorator(func):\n    import time\n    def wrapper(*args, **kwargs):\n        start = time.perf_counter()\n        result = func(*args, **kwargs)\n        print(f'{func.__name__} executed in {time.perf_counter() - start:.6f}s')\n        return result\n    return wrapper\n```\n- **Generators (`yield`)**: Lazy evaluation, producing items on-demand with minimal memory footprint ($\\mathcal{O}(1)$ memory for streaming large datasets).\n\n#### 3. GIL (Global Interpreter Lock):\n- CPython uses a mutex (GIL) preventing multiple native threads from executing Python bytecodes simultaneously. For CPU-bound tasks, use `multiprocessing`; for I/O-bound tasks, use `asyncio` or `threading`."
+      ]
+    },
+    {
+      "tag": "deep_learning_transformers",
+      "patterns": [
+        "deep learning", "neural networks", "transformer architecture", "attention mechanism",
+        "how do llms work", "cnn vs rnn", "backpropagation", "loss functions optimizers"
+      ],
+      "responses": [
+        "### Deep Learning & Transformer Architectures\n\n#### 1. Artificial Neural Networks & Backpropagation:\n- **Forward Pass**: Compute activations layer by layer: $z^{[l]} = W^{[l]} a^{[l-1]} + b^{[l]}$, $a^{[l]} = \\sigma(z^{[l]})$.\n- **Backpropagation**: Compute partial derivatives of loss $\\mathcal{L}$ with respect to weights using the Chain Rule ($\\frac{\\partial \\mathcal{L}}{\\partial W}$), updating parameters via Optimizers (SGD, Adam, RMSprop).\n\n#### 2. The Transformer Architecture (*Vaswani et al., 2017*):\n- **Self-Attention Mechanism**:\n  $$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{Q K^T}{\\sqrt{d_k}}\\right) V$$\n  - $Q$ (Query): What the token is looking for.\n  - $K$ (Key): What the token offers/represents.\n  - $V$ (Value): The actual information content.\n- **Multi-Head Attention**: Allows the model to attend simultaneously to information from different representation subspaces at different positions.\n- **Positional Encoding**: Injects sequence order since transformers process all tokens in parallel."
+      ]
+    },
+    {
+      "tag": "physics_laws_universe",
+      "patterns": [
+        "physics", "laws of physics", "newtons laws of motion", "laws of thermodynamics",
+        "theory of relativity", "quantum mechanics", "speed of light", "black holes general relativity"
+      ],
+      "responses": [
+        "### Fundamental Laws of Physics & The Universe\n\n#### 1. Newton's Three Laws of Motion:\n1. **First Law (Inertia)**: An object remains at rest or in uniform motion unless acted upon by a net external force.\n2. **Second Law (Force & Acceleration)**: $\\vec{F} = m \\vec{a} = \\frac{d\\vec{p}}{dt}$.\n3. **Third Law (Action & Reaction)**: For every action, there is an equal and opposite reaction ($F_{AB} = -F_{BA}$).\n\n#### 2. Laws of Thermodynamics:\n- **First Law (Energy Conservation)**: $\\Delta U = Q - W$ (Energy cannot be created or destroyed, only transformed).\n- **Second Law (Entropy)**: The total entropy (disorder) of an isolated system always increases over time ($\\Delta S \\ge 0$).\n- **Third Law**: As temperature approaches absolute zero ($0\\text{ K}$), entropy approaches a constant minimum.\n\n#### 3. Einstein's Theory of Relativity:\n- **Special Relativity (1905)**: The laws of physics are identical in all inertial reference frames; speed of light in vacuum $c \\approx 3 \\times 10^8\\text{ m/s}$ is constant for all observers. Mass-energy equivalence: $E = m c^2$.\n- **General Relativity (1915)**: Gravity is the geometric curvature of 4-dimensional spacetime caused by mass and energy ($G_{\\mu\\nu} = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}$)."
+      ]
+    },
+    {
       "tag": "thanks_farewell",
       "patterns": [
         "thank you", "thanks a lot", "bye", "goodbye", "see you later", "thanks for help", "appreciate it"
@@ -311,3 +353,4 @@
     }
   ]
 }
+
